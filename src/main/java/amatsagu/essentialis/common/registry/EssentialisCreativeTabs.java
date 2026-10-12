@@ -16,5 +16,9 @@ public final class EssentialisCreativeTabs {
 		CreativeModeTabEvents.modifyOutputEvent(CreativeModeTabs.TOOLS_AND_UTILITIES).register(output ->
 			output.accept(EssentialisItems.HAMMER)
 		);
+
+		CreativeModeTabEvents.modifyOutputEvent(CreativeModeTabs.TOOLS_AND_UTILITIES).register(output ->
+			output.accept(EssentialisItems.WAYBACK_STONE)
+		);
 	}
 }

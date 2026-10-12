@@ -17,8 +17,9 @@ loot) is data-driven. Updating to a new Minecraft version mostly means revisitin
 and the handful of vanilla hooks each item uses.
 
 The current items are the **Echo Chakram** (a faithful native port of the popular
-[*Chakram*](https://modrinth.com/datapack/chakram) data pack by maybejake & evergreenavery) and the
-**Hammer**, a combined iron pickaxe/shovel that mines in a 3x3.
+[*Chakram*](https://modrinth.com/datapack/chakram) data pack by maybejake & evergreenavery), the
+**Hammer** (a combined iron pickaxe/shovel that mines in a 3x3) and the **Wayback Stone** (a
+death-saving charm with a teleport home).
 
 ## The Echo Chakram
 A mid-range throwing weapon crafted from echo shards and a breeze rod. **Right click** to throw the
@@ -115,6 +116,31 @@ b
 ```
 where `i` is an **iron block**, `s` is a **stick** and `b` is a **blaze rod**.
 
+## The Wayback Stone
+A charm that cheats death. When you would otherwise die, the stone instead leaves you on **one
+heart** and teleports you to your spawn point (bed or respawn anchor, following vanilla respawn
+rules including anchor charge use), grants **30 seconds of fire resistance** (with visible particles),
+then goes on a **15 minute cooldown** shared by all Wayback Stones.
+
+- Works from a trinket slot when [Trinkets Updated](https://modrinth.com/mod/trinkets-updated) is
+  installed (necklace slot), or from anywhere in your inventory without it.
+- Does nothing while on cooldown, in creative/spectator, or without a valid bed or charged anchor
+  spawn — in those cases death proceeds normally.
+- The stone is not consumed; the cooldown is the cost.
+- The effect is written in the item tooltip in gray text through vanilla's tooltip mechanism, so
+  JEI and other tooltip readers display it, plus an `item.essentialis.wayback_stone.desc` language
+  key for description mods.
+
+### Crafting
+```
+IGI
+GHG
+IGI
+```
+where `I` is a **gold ingot**, `G` is **glowstone** and `H` is a **heart of the sea** — the same
+recipe and texture as the original
+[WaybackStone](https://modrinth.com/mod/wayback-stone) mod (mechanic redesigned).
+
 ## Installation
 1. Install [Fabric Loader](https://fabricmc.net/use/) for Minecraft **26.3**.
 2. Drop [Fabric API](https://modrinth.com/mod/fabric-api) and the Essentialis jar into your `mods`
@@ -141,6 +167,8 @@ The built jar is written to `build/libs/`.
 - `common/loot/` – ancient city book injection.
 - `common/recipe/` – the chakram recipe key and the recipe-book unlock helper.
 - `common/HammerMining`, `common/HammerUtil` – the hammer's server-side 3x3 mining and shared plane rules.
+- `common/WaybackStoneEffect` – the death-save handler (cancels lethal damage, teleports home, applies cooldown).
+- `compat/trinkets/` – isolated Trinkets API bridge, only loaded when the mod is present.
 - `mixin/` – a single targeted mixin that unlocks the recipe when an echo shard enters the inventory.
 - `client/` – client entry point, the chakram renderer (reuses vanilla's item display renderer), the
   chakram stat tooltip and the hammer's 3x3 block outline.

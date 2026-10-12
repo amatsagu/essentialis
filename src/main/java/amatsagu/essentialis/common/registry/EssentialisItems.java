@@ -2,6 +2,7 @@ package amatsagu.essentialis.common.registry;
 
 import amatsagu.essentialis.Essentialis;
 import amatsagu.essentialis.common.item.ChakramItem;
+import amatsagu.essentialis.common.item.WaybackStoneItem;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.Registry;
 import net.minecraft.core.component.DataComponents;
@@ -9,6 +10,7 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -44,6 +46,19 @@ public final class EssentialisItems {
 			.durability(HAMMER_DURABILITY)
 			.repairable(Items.IRON_BLOCK)
 			.component(DataComponents.TOOL, createHammerTool())
+	));
+
+	public static final TagKey<Item> REPAIRS_WAYBACK_STONE = TagKey.create(
+		Registries.ITEM,
+		Essentialis.id("repairs_wayback_stone")
+	);
+
+	public static final Item WAYBACK_STONE = register("wayback_stone", id -> new WaybackStoneItem(
+		new Item.Properties()
+			.setId(id)
+			.stacksTo(1)
+			.rarity(Rarity.RARE)
+			.repairable(REPAIRS_WAYBACK_STONE)
 	));
 
 	private EssentialisItems() {

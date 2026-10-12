@@ -14,12 +14,50 @@ repositories {
 		url = "https://maven.fabricmc.net"
 	}
 	mavenCentral()
+	maven {
+		name = "EssentialisLocal"
+		url = uri("maven-local")
+	}
 }
 
 dependencies {
 	minecraft("com.mojang:minecraft:${minecraft_version}")
 	implementation("net.fabricmc:fabric-loader:${loader_version}")
 	implementation("net.fabricmc.fabric-api:fabric-api:${fabric_api_version}")
+	compileOnly("eu.pb4:trinkets-updated:4.2.1+26.3")
+}
+
+def trinketsJar = file("maven-local/eu/pb4/trinkets-updated/4.2.1+26.3/trinkets-updated-4.2.1+26.3.jar")
+
+tasks.register("downloadTrinketsApi") {
+	outputs.file(trinketsJar)
+
+	doLast {
+		trinketsJar.parentFile.mkdirs()
+
+		if (!trinketsJar.exists()) {
+			new URL("https://cdn.modrinth.com/data/XaT8sLP6/versions/lVR1OKgV/trinkets-4.2.1%2B26.3.jar")
+				.withInputStream { input -> trinketsJar.withOutputStream { output -> output << input } }
+		}
+
+		def digest = java.security.MessageDigest.getInstance("SHA-512")
+		trinketsJar.withInputStream { input ->
+			byte[] buffer = new byte[8192]
+			int read
+			while ((read = input.read(buffer)) != -1) {
+				digest.update(buffer, 0, read)
+			}
+		}
+
+		def actual = digest.digest().encodeHex().toString()
+		if (actual != "d4038e93b95462cff05075dad5b97669871f62212c0228ec6483782e22476d0354d1869f0e523fdb23b2a233fa0f15ff01d497fd2c8a5292ab20838dc464d15a") {
+			throw new GradleException("Trinkets API jar checksum mismatch: " + actual)
+		}
+	}
+}
+
+tasks.named("compileJava") {
+	dependsOn("downloadTrinketsApi")
 }
 
 processResources {

@@ -45,3 +45,4 @@ Penchant/
 
 # logs
 logs/
+maven-local/**/*.jar

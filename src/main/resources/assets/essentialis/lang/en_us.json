@@ -3,6 +3,8 @@
   "item.essentialis.chakram.desc": "Throw it to strike enemies from afar. It bounces off blocks and returns to you.",
   "item.essentialis.hammer": "Hammer",
   "item.essentialis.hammer.desc": "Mines a 3x3 area like an iron pickaxe and shovel combined. Repaired with iron blocks.",
+  "item.essentialis.wayback_stone": "Wayback Stone",
+  "item.essentialis.wayback_stone.desc": "Saves you from death, leaving one heart, and returns you to your spawn point. Grants 30 seconds of fire resistance. 15 minute cooldown.",
   "entity.essentialis.chakram": "Chakram",
 
   "enchantment.essentialis.bouncing": "Bouncing",
@@ -17,5 +19,9 @@
   "enchantment.essentialis.phasing.desc": "Allows the chakram to pass through enemies. Each level pierces one additional enemy.",
   "enchantment.essentialis.ricochet.desc": "Increases damage for each block the chakram has bounced off, plus 0.5 damage per level.",
 
-  "tag.item.essentialis.enchantable.chakram": "Chakram"
+  "tag.item.essentialis.enchantable.chakram": "Chakram",
+  "tag.item.essentialis.repairs_wayback_stone": "Wayback Stone Repair Materials",
+
+  "tooltip.essentialis.wayback_stone.line1": "Cheats death and returns you to your respawn point.",
+  "tooltip.essentialis.wayback_stone.line2": "Recharges over 15 minutes."
 }
