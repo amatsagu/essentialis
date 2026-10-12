@@ -108,5 +108,7 @@ public class WaybackStoneItem extends Item {
 			"Recharges over %s.",
 			Component.literal("15 minutes").withStyle(ChatFormatting.GOLD)
 		).withStyle(ChatFormatting.GRAY));
+
+		builder.accept(Component.empty());
 	}
 }

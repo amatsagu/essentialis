@@ -1,11 +1,17 @@
 package amatsagu.essentialis.common.ring;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.FormattedText;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.Style;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public final class RingTooltips {
 
@@ -13,6 +19,18 @@ public final class RingTooltips {
 	}
 
 	public static List<Component> lines(final RingKind kind) {
+		final List<Component> lines = new ArrayList<>(logicalLines(kind));
+
+		lines.add(Component.empty());
+
+		if (FabricLoader.getInstance().getEnvironmentType() != EnvType.CLIENT) {
+			return List.copyOf(lines);
+		}
+
+		return wrap(lines, kind);
+	}
+
+	private static List<Component> logicalLines(final RingKind kind) {
 		final List<Component> lines = new ArrayList<>(4);
 		final String base = "tooltip.essentialis.ring." + kind.id;
 
@@ -30,9 +48,52 @@ public final class RingTooltips {
 			line++;
 		}
 
-		lines.add(Component.empty());
+		return lines;
+	}
 
-		return List.copyOf(lines);
+	private static List<Component> wrap(final List<Component> lines, final RingKind kind) {
+		if (kind == RingKind.NETHERITE_TOPAZ) {
+			return List.copyOf(lines);
+		}
+
+		final Minecraft minecraft = Minecraft.getInstance();
+		final int standard = standardWidth(minecraft);
+		final List<Component> wrapped = new ArrayList<>(lines.size());
+
+		for (final Component line : lines) {
+			if (minecraft.font.width(line) <= standard) {
+				wrapped.add(line);
+				continue;
+			}
+
+			for (final FormattedText part : minecraft.font.splitIgnoringLanguage(line, standard)) {
+				wrapped.add(flatten(part));
+			}
+		}
+
+		return List.copyOf(wrapped);
+	}
+
+	private static int standardWidth(final Minecraft minecraft) {
+		int width = 0;
+
+		for (final Component line : logicalLines(RingKind.NETHERITE_TOPAZ)) {
+			width = Math.max(width, minecraft.font.width(line));
+		}
+
+		return width;
+	}
+
+	private static Component flatten(final FormattedText text) {
+		final MutableComponent out = Component.empty();
+
+		text.visit((style, string) -> {
+			out.append(Component.literal(string).withStyle(style));
+
+			return Optional.empty();
+		}, Style.EMPTY);
+
+		return out;
 	}
 
 	private static Component text(final String key, final String fallback, final boolean dark) {
