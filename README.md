@@ -53,6 +53,25 @@ teleports to respawn point.
 - Has 15 minute use cooldown. Stone itself is never consumed.
 - Also grants 30 seconds of fire resistance.
 
+## Rings
+Trinkets with no durability. Work from a trinket **ring slot** (with Trinkets Updated installed) or
+from either hand. Effects from multiple rings stack. Netherite versions are upgraded in a
+**smithing table** (ring + netherite ingot + upgrade template).
+
+- **Citrine Ring** - highlights enemies within **16 blocks** (red outline). Netherite: **32 blocks**
+  and ignites undead within 16 blocks. Rare loot: mineshafts, outposts, mansions.
+- **Jade Ring** - **+10%** movement speed and jump height. Netherite: doubled, also works while
+  riding. Rare loot: chests and barrels everywhere.
+- **Ruby Ring** - heals **5%** of the damage you deal. Netherite: doubled. Rare loot: nether
+  fortresses and bastions.
+- **Sapphire Ring** - **25%** shorter burn time, **+25%** speed in water and lava. Netherite: +50%
+  speed and longer breath. Rare loot: ocean ruins, shipwrecks and the drowned.
+- **Tanzanite Ring** - doubles the duration of **any** effect on you. Netherite: positive effects
+  only. Rare loot: witches and illagers.
+- **Topaz Ring** - **+1** Luck. Netherite: +2 Luck and fortuitous finds (extra diamonds from lapis
+  and emerald ores, bonus harvests, trophies from slain foes, lucky catches and luckier chests). Rare
+  loot: chests and barrels everywhere.
+
 ## Compatibility
 - [Trinkets Updated](https://modrinth.com/mod/trinkets-updated): the Wayback Stone can be worn in a ring slot.
 - [Penchant](https://modrinth.com/mod/penchant) (0.5.7+): chakram enchantments level up through use, like vanilla ones.

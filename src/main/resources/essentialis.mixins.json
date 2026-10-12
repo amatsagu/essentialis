@@ -3,7 +3,9 @@
   "package": "amatsagu.essentialis.mixin",
   "compatibilityLevel": "JAVA_25",
   "mixins": [
-    "AbstractContainerMenuMixin"
+    "AbstractContainerMenuMixin",
+    "InventoryMixin",
+    "TanzaniteMixin"
   ],
   "injectors": {
     "defaultRequire": 1

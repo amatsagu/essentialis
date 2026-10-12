@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:smithing_transform",
+  "template": "minecraft:netherite_upgrade_smithing_template",
+  "base": "essentialis:topaz_ring",
+  "addition": "minecraft:netherite_ingot",
+  "result": {
+    "id": "essentialis:netherite_topaz_ring"
+  }
+}

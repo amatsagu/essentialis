@@ -1,0 +1,18 @@
+{
+  "jewelry_equip": {
+    "subtitle": "subtitles.essentialis.jewelry_equip",
+    "sounds": [
+      {
+        "name": "essentialis:jewelry_equip"
+      }
+    ]
+  },
+  "jewelry_effect": {
+    "subtitle": "subtitles.essentialis.jewelry_effect",
+    "sounds": [
+      {
+        "name": "essentialis:jewelry_effect"
+      }
+    ]
+  }
+}

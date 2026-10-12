@@ -16,6 +16,7 @@ public class WaybackStoneItem extends Item {
 	}
 
 	@Override
+	@SuppressWarnings("deprecation")
 	public void appendHoverText(
 		final ItemStack stack,
 		final Item.TooltipContext context,

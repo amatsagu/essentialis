@@ -2,6 +2,7 @@ package amatsagu.essentialis.common.registry;
 
 import net.fabricmc.fabric.api.creativetab.v1.CreativeModeTabEvents;
 import net.minecraft.world.item.CreativeModeTabs;
+import net.minecraft.world.item.Item;
 
 public final class EssentialisCreativeTabs {
 
@@ -16,6 +17,10 @@ public final class EssentialisCreativeTabs {
 		CreativeModeTabEvents.modifyOutputEvent(CreativeModeTabs.TOOLS_AND_UTILITIES).register(output -> {
 			output.accept(EssentialisItems.HAMMER);
 			output.accept(EssentialisItems.WAYBACK_STONE);
+
+			for (final Item item : EssentialisItems.RINGS.values()) {
+				output.accept(item);
+			}
 		});
 	}
 }

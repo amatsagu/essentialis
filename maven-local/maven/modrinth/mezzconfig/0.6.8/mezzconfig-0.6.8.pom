@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>maven.modrinth</groupId>
+	<artifactId>mezzconfig</artifactId>
+	<version>0.6.8</version>
+	<packaging>jar</packaging>
+	<name>MezzConfig (local dev-only mirror)</name>
+	<description>Dev-runtime mirror of the MezzConfig mod jar from Modrinth, required by JEI. Not shipped with Essentialis.</description>
+</project>

@@ -1,6 +1,18 @@
 {
   "replace": false,
   "values": [
-    "essentialis:wayback_stone"
+    "essentialis:wayback_stone",
+    "essentialis:citrine_ring",
+    "essentialis:jade_ring",
+    "essentialis:ruby_ring",
+    "essentialis:sapphire_ring",
+    "essentialis:tanzanite_ring",
+    "essentialis:topaz_ring",
+    "essentialis:netherite_citrine_ring",
+    "essentialis:netherite_jade_ring",
+    "essentialis:netherite_ruby_ring",
+    "essentialis:netherite_sapphire_ring",
+    "essentialis:netherite_tanzanite_ring",
+    "essentialis:netherite_topaz_ring"
   ]
 }

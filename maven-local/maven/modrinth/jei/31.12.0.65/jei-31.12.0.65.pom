@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>maven.modrinth</groupId>
+	<artifactId>jei</artifactId>
+	<version>31.12.0.65</version>
+	<packaging>jar</packaging>
+	<name>Just Enough Items (local dev-only mirror)</name>
+	<description>Dev-runtime mirror of the JEI mod jar from Modrinth. Not shipped with Essentialis.</description>
+</project>

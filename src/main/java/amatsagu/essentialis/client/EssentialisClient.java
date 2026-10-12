@@ -17,7 +17,7 @@ public class EssentialisClient implements ClientModInitializer {
 			(EntityRendererProvider) ChakramRenderer::new
 		);
 
-		ChakramStats.init();
+		ProjectileStats.init();
 
 		HammerOutline.init();
 	}
