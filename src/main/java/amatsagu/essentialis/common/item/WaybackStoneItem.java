@@ -26,7 +26,7 @@ public class WaybackStoneItem extends Item {
 	) {
 		builder.accept(Component.translatableWithFallback(
 			"tooltip.essentialis.wayback_stone.line1",
-			"Cheats death and returns you to your respawn point."
+			"Cheats death and returns the player to their respawn point."
 		).withStyle(ChatFormatting.GRAY));
 
 		builder.accept(Component.translatableWithFallback(
