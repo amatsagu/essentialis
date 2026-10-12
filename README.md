@@ -11,8 +11,8 @@
 
 The current items are the **Echo Chakram** (a faithful native port of the popular
 [*Chakram*](https://modrinth.com/datapack/chakram) data pack by maybejake & evergreenavery), the
-**Hammer** (a combined iron pickaxe/shovel that mines in a 3x3) and the **Wayback Stone** (a
-death-saving charm with a teleport home).
+**Hammer** (a combined iron pickaxe/shovel that mines in a 3x3), the **Wayback Stone** (a
+death-saving charm with a teleport home) and set of 12 rings (with unique effects).
 
 ## <img src="src/main/resources/assets/essentialis/textures/item/chakram.png" width="32" align="top" /> The Echo Chakram
 A mid-range throwing weapon crafted from echo shards and a breeze rod. **Right click** to throw the
@@ -68,15 +68,16 @@ from either hand. Effects from multiple rings stack. Netherite versions are upgr
 | <img src="src/main/resources/assets/essentialis/textures/item/tanzanite_ring.png" width="32" /> | **Tanzanite Ring** - doubles the duration of **any** effect on the player. Netherite: positive effects only. Cannot be stacked. Rare loot (2%): witch and illager kills. |
 | <img src="src/main/resources/assets/essentialis/textures/item/topaz_ring.png" width="32" /> | **Topaz Ring** - **+1** Luck. Netherite: +2 Luck and bonus chance for rare finds (chest loot, double mob drops, extra catches, gold nuggets from quartz, diamonds from lapis and emerald ores). Rare loot (2%): chests and barrels everywhere. |
 
-## Compatibility
-- [Trinkets Updated](https://modrinth.com/mod/trinkets-updated): the Wayback Stone can be worn in a ring slot.
-- [Penchant](https://modrinth.com/mod/penchant) (0.5.7+): chakram enchantments level up through use, like vanilla ones.
+## Mod compatibility
+This mod was created for **Essentia 2** modpack - it's a close to vanilla modpack so this mod will work but it's not intended to be used elsewhere - that's why I don't provide config file.
+
+It requires [Trinkets Updated](https://modrinth.com/mod/trinkets-updated) mod and it is recommended to combine with [JEI](https://modrinth.com/mod/jei) to see recipes and extra data. Additionally, there's experimental, optional support for [Penchant](https://github.com/ThePotatoArchivist/Penchant) mod.
 
 ## Credits
 - Original *Chakram* data pack concept and assets by **maybejake** and **evergreenavery**
   (MIT licensed). The chakram texture/icon come from that project.
-- Original *Wayback Stone* data pack / mod concept and assets by **DarkhaxDev**
-  (GNU Lesser General Public licensed). The stone texture come from that project.
+- Wayback stone icon comes from original *Wayback Stone* data pack / mod concept and assets by **DarkhaxDev** (GNU Lesser General Public licensed).
+- All ring icons comes from *Jewelry (RPG Series)* mod by **ZsoltMolnarrr**.
 - Native Fabric implementation by **Amatsagu**.
 
 > [!Note]
