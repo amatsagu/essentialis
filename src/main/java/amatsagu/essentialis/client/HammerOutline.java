@@ -17,14 +17,8 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-/**
- * Makes the client draw the full 3x3 outline while holding the hammer, so the player can see exactly
- * which blocks a swing will affect.
- *
- * <p>Uses Fabric's render-state extraction event and simply widens vanilla's single block outline
- * state into one shape spanning all nine blocks, using the same plane rule as the server.</p>
- */
 public final class HammerOutline {
+
 	private HammerOutline() {
 	}
 
@@ -34,14 +28,17 @@ public final class HammerOutline {
 
 	private static void afterBlockOutlineExtraction(final LevelExtractionContext context, final HitResult hitResult) {
 		final LocalPlayer player = Minecraft.getInstance().player;
+
 		if (player == null || !player.getMainHandItem().is(EssentialisItems.HAMMER)) {
 			return;
 		}
+
 		if (!(hitResult instanceof BlockHitResult) || hitResult.getType() == HitResult.Type.MISS) {
 			return;
 		}
 
 		final BlockOutlineRenderState existing = context.levelState().blockOutlineRenderState;
+
 		if (existing == null) {
 			return;
 		}
@@ -52,6 +49,7 @@ public final class HammerOutline {
 		final CollisionContext collision = CollisionContext.of(player);
 
 		VoxelShape combined = existing.shape();
+
 		for (int a = -1; a <= 1; a++) {
 			for (int b = -1; b <= 1; b++) {
 				if (a == 0 && b == 0) {
@@ -60,21 +58,26 @@ public final class HammerOutline {
 
 				final BlockPos target = HammerUtil.offset(center, axis, a, b);
 				final BlockState state = level.getBlockState(target);
+
 				if (state.isAir() || !HammerUtil.isMineable(state)) {
 					continue;
 				}
 
 				final VoxelShape shape = state.getShape(level, target, collision).move(
-						target.getX() - center.getX(),
-						target.getY() - center.getY(),
-						target.getZ() - center.getZ()
+					target.getX() - center.getX(),
+					target.getY() - center.getY(),
+					target.getZ() - center.getZ()
 				);
+
 				combined = Shapes.or(combined, shape);
 			}
 		}
 
 		context.levelState().blockOutlineRenderState = new BlockOutlineRenderState(
-				center, existing.isTranslucent(), existing.highContrast(), combined
+			center,
+			existing.isTranslucent(),
+			existing.highContrast(),
+			combined
 		);
 	}
 }

@@ -10,15 +10,8 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 
-/**
- * The Echo Chakram.
- *
- * <p>Using it (right click) throws the actual item as a returning projectile. In survival the item
- * leaves the hand while in flight and is given back when it returns; creative players keep their copy
- * and simply spawn a short-lived projectile. This mirrors the original data pack, where the thrown
- * entity carried the item stack and gave it back on pickup.</p>
- */
 public class ChakramItem extends Item {
+
 	public ChakramItem(final Item.Properties properties) {
 		super(properties);
 	}
@@ -33,10 +26,10 @@ public class ChakramItem extends Item {
 
 		if (level instanceof ServerLevel serverLevel) {
 			final ChakramEntity chakram = new ChakramEntity(serverLevel, player, stack.copy(), hand);
+
 			serverLevel.addFreshEntity(chakram);
 
 			if (!player.isCreative()) {
-				// The item is physically thrown, so remove it from the hand.
 				player.setItemInHand(hand, ItemStack.EMPTY);
 			}
 

@@ -15,19 +15,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-/**
- * Shows the chakram's own stats (thrown damage, range, conditional bonuses) in its tooltip, in the
- * same blue-value style vanilla uses for weapon attributes.
- *
- * <p>The numbers are derived from the enchantments currently on the stack, so the tooltip updates
- * the moment the chakram is enchanted (e.g. Lightweight raises the range line, Sharpness/Ricochet
- * raise the damage line). Everything is computed in Java and runs client-side only.</p>
- */
 public final class ChakramStats {
+
 	private static final double BASE_DAMAGE = 5.0D;
+
 	private static final double BASE_RANGE = 15.0D;
+
 	private static final double RANGE_PER_LIGHTWEIGHT = 7.5D;
+
 	private static final double SMITE_PER_LEVEL = 2.5D;
+
 	private static final double BANE_PER_LEVEL = 2.5D;
 
 	private ChakramStats() {
@@ -38,12 +35,11 @@ public final class ChakramStats {
 	}
 
 	private static void onTooltip(
-			final ItemStack stack,
-			final Item.TooltipContext context,
-			final TooltipFlag flag,
-			final List<Component> lines
+		final ItemStack stack,
+		final Item.TooltipContext context,
+		final TooltipFlag flag,
+		final List<Component> lines
 	) {
-		// Cheap early-out: only the chakram shows these stats.
 		if (!stack.is(EssentialisItems.CHAKRAM) || lines.isEmpty()) {
 			return;
 		}
@@ -56,6 +52,7 @@ public final class ChakramStats {
 		final int lightweight = EssentialisEnchantments.getLevel(stack, EssentialisEnchantments.LIGHTWEIGHT);
 
 		double damage = BASE_DAMAGE;
+
 		if (ricochet > 0) {
 			damage += 0.5D * ricochet;
 		} else if (sharpness > 0) {
@@ -65,6 +62,7 @@ public final class ChakramStats {
 		final double range = BASE_RANGE + RANGE_PER_LIGHTWEIGHT * lightweight;
 
 		final List<Component> stats = new ArrayList<>(6);
+
 		stats.add(Component.literal("When Thrown:").withStyle(ChatFormatting.GRAY));
 		stats.add(stat("Thrown Damage", damage));
 		stats.add(stat("Block Range", range));
@@ -73,27 +71,29 @@ public final class ChakramStats {
 		if (bouncing > 0) {
 			stats.add(stat("Max Ricochets", bouncing));
 		}
+
 		if (smite > 0) {
 			stats.add(stat("Bonus vs Undead", SMITE_PER_LEVEL * smite));
 		}
+
 		if (bane > 0) {
 			stats.add(stat("Bonus vs Arthropods", BANE_PER_LEVEL * bane));
 		}
 
-		// Sit just under the item name, like vanilla's "When in Main Hand:" attribute block.
 		lines.addAll(1, stats);
 	}
 
 	private static Component stat(final String label, final double value) {
 		return Component.literal(" ")
-				.append(Component.literal(number(value)).withStyle(ChatFormatting.BLUE))
-				.append(Component.literal(" " + label).withStyle(ChatFormatting.GRAY));
+			.append(Component.literal(number(value)).withStyle(ChatFormatting.BLUE))
+			.append(Component.literal(" " + label).withStyle(ChatFormatting.GRAY));
 	}
 
 	private static String number(final double value) {
 		if (value == Math.rint(value)) {
 			return Long.toString((long) value);
 		}
+
 		return String.format(Locale.ROOT, "%.1f", value);
 	}
 }
