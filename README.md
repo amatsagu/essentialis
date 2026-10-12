@@ -50,12 +50,12 @@ A heavy mining tool that works as a combination of **iron pickaxe** and **iron s
 A charm that cheats death. When player is about to die, it leaves them on **one heart** and
 teleports to respawn point.
 
-- Works from a trinket **ring slot** (with Trinkets Updated installed) or from either hand.
+- Works from a trinket **ring slot** or from either hand.
 - Has 15 minute use cooldown. Stone itself is never consumed.
 - Also grants 30 seconds of fire resistance.
 
 ## Rings
-Trinkets with no durability. Work from a trinket **ring slot** (with Trinkets Updated installed) or
+Trinkets with no durability. Work from a trinket **ring slot** or
 from either hand. Effects from multiple rings stack. Netherite versions are upgraded in a
 **smithing table** (ring + netherite ingot + upgrade template).
 
