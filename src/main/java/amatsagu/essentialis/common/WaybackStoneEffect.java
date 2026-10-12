@@ -1,12 +1,12 @@
 package amatsagu.essentialis.common;
 
 import amatsagu.essentialis.common.registry.EssentialisItems;
+import amatsagu.essentialis.common.registry.EssentialisSounds;
 import amatsagu.essentialis.compat.trinkets.TrinketsCompat;
 import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.damagesource.DamageSource;
@@ -37,36 +37,43 @@ public final class WaybackStoneEffect {
 			return true;
 		}
 
-		final ItemStack stone = findStone(player);
+		return !tryTrigger(player, findStone(player));
+	}
 
+	public static boolean tryTrigger(final ServerPlayer player, final ItemStack stone) {
 		if (stone.isEmpty() || player.getCooldowns().isOnCooldown(stone)) {
-			return true;
+			return false;
 		}
 
 		final TeleportTransition transition = player.findRespawnPositionAndUseSpawnBlock(true, TeleportTransition.DO_NOTHING);
 
 		if (transition.missingRespawnBlock()) {
-			return true;
+			return false;
 		}
+
+		apply(player, stone, transition);
+
+		return true;
+	}
+
+	private static void apply(final ServerPlayer player, final ItemStack stone, final TeleportTransition transition) {
 
 		final ServerLevel fromLevel = (ServerLevel) player.level();
 		final Vec3 fromPos = player.position();
 
 		player.setHealth(SURVIVE_HEALTH);
-		player.addEffect(new MobEffectInstance(MobEffects.FIRE_RESISTANCE, FIRE_RESISTANCE_TICKS, 0, false, true));
+		player.addEffect(new MobEffectInstance(MobEffects.FIRE_RESISTANCE, FIRE_RESISTANCE_TICKS, 0, true, true));
 		player.teleport(transition);
 		player.getCooldowns().addCooldown(stone, COOLDOWN_TICKS);
 		player.awardStat(Stats.ITEM_USED.get(EssentialisItems.WAYBACK_STONE));
 
 		burst(fromLevel, fromPos);
 		burst((ServerLevel) player.level(), player.position());
-
-		return false;
 	}
 
 	private static void burst(final ServerLevel level, final Vec3 pos) {
 		level.sendParticles(ParticleTypes.PORTAL, pos.x, pos.y + 1.0D, pos.z, 60, 0.4D, 0.8D, 0.4D, 0.1D);
-		level.playSound(null, pos.x, pos.y, pos.z, SoundEvents.ENDERMAN_TELEPORT, SoundSource.PLAYERS, 1.0F, 1.0F);
+		level.playSound(null, pos.x, pos.y, pos.z, EssentialisSounds.JEWELRY_EFFECT.value(), SoundSource.PLAYERS, 1.0F, 1.0F);
 	}
 
 	private static ItemStack findStone(final ServerPlayer player) {
