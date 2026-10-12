@@ -3,6 +3,7 @@ package amatsagu.essentialis.common.ring;
 import amatsagu.essentialis.common.registry.EssentialisSounds;
 import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
 import net.fabricmc.fabric.api.loot.v3.LootTableEvents;
 import net.minecraft.core.BlockPos;
@@ -105,6 +106,13 @@ public final class RingEffects {
 		LootTableEvents.MODIFY_DROPS.register(RingEffects::topazFishing);
 		LootTableEvents.MODIFY_DROPS.register(RingEffects::topazChests);
 		LootTableEvents.MODIFY_DROPS.register(RingEffects::topazLooting);
+		ServerPlayConnectionEvents.DISCONNECT.register((handler, server) -> {
+			final Entity last = LAST_VEHICLES.remove(handler.player);
+
+			if (last instanceof LivingEntity living) {
+				clearVehicleModifiers(living);
+			}
+		});
 	}
 
 	private static void tickServer(final MinecraftServer server) {
@@ -124,15 +132,15 @@ public final class RingEffects {
 
 		final double speedBonus = 0.1D * jade + 0.2D * netherJade;
 
-		RingHelper.setModifier(player, Attributes.MOVEMENT_SPEED, RingHelper.id("jade_speed"), speedBonus, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL);
-		RingHelper.setModifier(player, Attributes.JUMP_STRENGTH, RingHelper.id("jade_jump"), speedBonus, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL);
-		RingHelper.setModifier(player, Attributes.LUCK, RingHelper.id("topaz_luck"), topazLuck, AttributeModifier.Operation.ADD_VALUE);
+		RingHelper.setModifier(player, Attributes.MOVEMENT_SPEED, RingHelper.JADE_SPEED, speedBonus, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL);
+		RingHelper.setModifier(player, Attributes.JUMP_STRENGTH, RingHelper.JADE_JUMP, speedBonus, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL);
+		RingHelper.setModifier(player, Attributes.LUCK, RingHelper.TOPAZ_LUCK, topazLuck, AttributeModifier.Operation.ADD_VALUE);
 
 		final double waterBonus = 0.25D * RingHelper.normal(rings, RingFamily.SAPPHIRE) + 0.5D * RingHelper.netherite(rings, RingFamily.SAPPHIRE);
 		final double oxygenBonus = 0.5D * RingHelper.netherite(rings, RingFamily.SAPPHIRE);
 
-		RingHelper.setModifier(player, Attributes.WATER_MOVEMENT_EFFICIENCY, RingHelper.id("sapphire_water"), waterBonus, AttributeModifier.Operation.ADD_VALUE);
-		RingHelper.setModifier(player, Attributes.OXYGEN_BONUS, RingHelper.id("sapphire_oxygen"), oxygenBonus, AttributeModifier.Operation.ADD_VALUE);
+		RingHelper.setModifier(player, Attributes.WATER_MOVEMENT_EFFICIENCY, RingHelper.SAPPHIRE_WATER, waterBonus, AttributeModifier.Operation.ADD_VALUE);
+		RingHelper.setModifier(player, Attributes.OXYGEN_BONUS, RingHelper.SAPPHIRE_OXYGEN, oxygenBonus, AttributeModifier.Operation.ADD_VALUE);
 
 		tickVehicle(player, 0.2D * netherJade);
 		tickSapphire(player, RingHelper.normal(rings, RingFamily.SAPPHIRE), RingHelper.netherite(rings, RingFamily.SAPPHIRE));
@@ -159,31 +167,28 @@ public final class RingEffects {
 
 	private static void tickVehicle(final ServerPlayer player, final double bonus) {
 		final Entity current = player.getVehicle();
-		final Entity last = LAST_VEHICLES.get(player);
+		final Entity last = current == null ? LAST_VEHICLES.remove(player) : LAST_VEHICLES.put(player, current);
 
 		if (last != null && last != current && last instanceof LivingEntity living) {
-			RingHelper.setModifier(living, Attributes.MOVEMENT_SPEED, RingHelper.id("vehicle_speed"), 0.0D, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL);
-			RingHelper.setModifier(living, Attributes.JUMP_STRENGTH, RingHelper.id("vehicle_jump"), 0.0D, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL);
+			clearVehicleModifiers(living);
 		}
 
 		if (current == null) {
-			LAST_VEHICLES.remove(player);
-			return;
-		}
-
-		LAST_VEHICLES.put(player, current);
-
-		if (bonus <= 0.0D) {
 			return;
 		}
 
 		if (current instanceof LivingEntity living) {
-			RingHelper.setModifier(living, Attributes.MOVEMENT_SPEED, RingHelper.id("vehicle_speed"), bonus, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL);
-			RingHelper.setModifier(living, Attributes.JUMP_STRENGTH, RingHelper.id("vehicle_jump"), bonus, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL);
-		} else if (current instanceof VehicleEntity) {
+			RingHelper.setModifier(living, Attributes.MOVEMENT_SPEED, RingHelper.VEHICLE_SPEED, bonus, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL);
+			RingHelper.setModifier(living, Attributes.JUMP_STRENGTH, RingHelper.VEHICLE_JUMP, bonus, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL);
+		} else if (bonus > 0.0D && current instanceof VehicleEntity) {
 			final Vec3 motion = current.getDeltaMovement();
 			current.setDeltaMovement(motion.x * (1.0D + bonus), motion.y, motion.z * (1.0D + bonus));
 		}
+	}
+
+	private static void clearVehicleModifiers(final LivingEntity vehicle) {
+		RingHelper.setModifier(vehicle, Attributes.MOVEMENT_SPEED, RingHelper.VEHICLE_SPEED, 0.0D, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL);
+		RingHelper.setModifier(vehicle, Attributes.JUMP_STRENGTH, RingHelper.VEHICLE_JUMP, 0.0D, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL);
 	}
 
 	private static void tickSapphire(final ServerPlayer player, final int normal, final int netherite) {
@@ -245,6 +250,12 @@ public final class RingEffects {
 
 		for (final var entry : wearers.entrySet()) {
 			tickCitrineLevel(entry.getKey(), entry.getValue());
+		}
+
+		for (final ServerPlayer player : server.getPlayerList().getPlayers()) {
+			if (player.level() instanceof ServerLevel level && !wearers.containsKey(level)) {
+				syncCitrineTeam(level, Set.of());
+			}
 		}
 	}
 

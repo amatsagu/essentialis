@@ -45,6 +45,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.function.Predicate;
 
 public class ChakramEntity extends Display.ItemDisplay {
 
@@ -71,6 +72,10 @@ public class ChakramEntity extends Display.ItemDisplay {
 	private static final EntityTypeTest<Entity, LivingEntity> LIVING_TEST = EntityTypeTest.forClass(LivingEntity.class);
 
 	private static final EntityTypeTest<Entity, ItemEntity> ITEM_TEST = EntityTypeTest.forClass(ItemEntity.class);
+
+	private static final Predicate<LivingEntity> ANY_LIVING = entity -> true;
+
+	private static final Predicate<ItemEntity> NOT_REMOVED = item -> !item.isRemoved();
 
 	private static final double SCAVENGE_RADIUS = 1.5D;
 
@@ -129,6 +134,14 @@ public class ChakramEntity extends Display.ItemDisplay {
 	private final List<ItemEntity> itemScratch = new ArrayList<>();
 
 	private final List<ItemStack> carried = new ArrayList<>();
+
+	private Entity tickOwner;
+
+	private double ownerEyeX;
+
+	private double ownerEyeY;
+
+	private double ownerEyeZ;
 
 	private final BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
 
@@ -201,6 +214,16 @@ public class ChakramEntity extends Display.ItemDisplay {
 			return;
 		}
 
+		this.tickOwner = this.getOwnerEntity();
+
+		if (this.tickOwner != null) {
+			final Vec3 eye = this.tickOwner.getEyePosition();
+
+			this.ownerEyeX = eye.x;
+			this.ownerEyeY = eye.y;
+			this.ownerEyeZ = eye.z;
+		}
+
 		if (this.returning) {
 			this.faceOwner();
 		}
@@ -255,12 +278,16 @@ public class ChakramEntity extends Display.ItemDisplay {
 		}
 
 		if (this.returning && !this.pickupPending) {
-			final Entity owner = this.getOwnerEntity();
-
-			if (owner == null) {
+			if (this.tickOwner == null) {
 				this.dropAndDiscard(level);
-			} else if (this.position().distanceToSqr(owner.getEyePosition()) < 1.0D) {
-				this.pickupPending = true;
+			} else {
+				final double dx = this.getX() - this.ownerEyeX;
+				final double dy = this.getY() - this.ownerEyeY;
+				final double dz = this.getZ() - this.ownerEyeZ;
+
+				if (dx * dx + dy * dy + dz * dz < 1.0D) {
+					this.pickupPending = true;
+				}
 			}
 		}
 	}
@@ -333,7 +360,7 @@ public class ChakramEntity extends Display.ItemDisplay {
 		level.getEntities(
 			ITEM_TEST,
 			new AABB(x - SCAVENGE_RADIUS, y - SCAVENGE_RADIUS, z - SCAVENGE_RADIUS, x + SCAVENGE_RADIUS, y + SCAVENGE_RADIUS, z + SCAVENGE_RADIUS),
-			item -> !item.isRemoved(),
+			NOT_REMOVED,
 			this.itemScratch
 		);
 
@@ -561,7 +588,7 @@ public class ChakramEntity extends Display.ItemDisplay {
 			Math.max(z, endZ) + margin
 		);
 
-		level.getEntities(LIVING_TEST, box, entity -> true, this.hitCandidates);
+		level.getEntities(LIVING_TEST, box, ANY_LIVING, this.hitCandidates);
 	}
 
 	private static double distanceToBoxSqr(final AABB box, final double x, final double y, final double z) {
@@ -589,7 +616,7 @@ public class ChakramEntity extends Display.ItemDisplay {
 	}
 
 	private void onHitEntity(final ServerLevel level, final Entity target) {
-		if (target == this.getOwnerEntity()) {
+		if (target == this.tickOwner) {
 			if (this.returning || this.bounces >= 1) {
 				this.pickupPending = true;
 			}
@@ -721,7 +748,7 @@ public class ChakramEntity extends Display.ItemDisplay {
 			return false;
 		}
 
-		if (entity == this.getOwnerEntity() || this.bouncedEntities.contains(entity.getId())) {
+		if (entity == this.tickOwner || this.bouncedEntities.contains(entity.getId())) {
 			return false;
 		}
 
@@ -796,20 +823,16 @@ public class ChakramEntity extends Display.ItemDisplay {
 
 		this.returning = true;
 
-		final Entity owner = this.getOwnerEntity();
-
-		if (owner != null) {
-			this.level().playSound(null, owner.getX(), owner.getY(), owner.getZ(), SoundEvents.TRIDENT_RETURN, SoundSource.PLAYERS, 0.5F, 1.5F);
+		if (this.tickOwner != null) {
+			this.level().playSound(null, this.tickOwner.getX(), this.tickOwner.getY(), this.tickOwner.getZ(), SoundEvents.TRIDENT_RETURN, SoundSource.PLAYERS, 0.5F, 1.5F);
 		}
 
 		this.level().playSound(null, this.getX(), this.getY(), this.getZ(), SoundEvents.BREEZE_DEFLECT, SoundSource.PLAYERS, 1.0F, 1.3F);
 	}
 
 	private void faceOwner() {
-		final Entity owner = this.getOwnerEntity();
-
-		if (owner != null) {
-			this.faceTowards(owner.getEyePosition());
+		if (this.tickOwner != null) {
+			this.faceTowards(new Vec3(this.ownerEyeX, this.ownerEyeY, this.ownerEyeZ));
 		}
 	}
 

@@ -40,10 +40,6 @@ public final class PenchantCompat {
 		Essentialis.LOGGER.info("Penchant integration enabled, chakram hits level up enchantments.");
 	}
 
-	public static boolean isReady() {
-		return ready;
-	}
-
 	public static void onChakramHit(final LivingEntity user, final ItemStack stack) {
 		if (!ready) {
 			return;

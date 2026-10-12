@@ -17,9 +17,6 @@ import java.util.Set;
 
 public final class RingLoot {
 
-	private record Entry(Item item, int chance) {
-	}
-
 	private static final List<ResourceKey<LootTable>> ABANDONED_HUMAN_STRUCTURES = List.of(
 		BuiltInLootTables.ABANDONED_MINESHAFT,
 		BuiltInLootTables.PILLAGER_OUTPOST,

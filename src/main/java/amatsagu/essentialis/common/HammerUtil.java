@@ -31,6 +31,14 @@ public final class HammerUtil {
 		};
 	}
 
+	public static BlockPos.MutableBlockPos offsetInto(final BlockPos.MutableBlockPos out, final BlockPos pos, final Direction.Axis axis, final int a, final int b) {
+		return switch (axis) {
+			case X -> out.set(pos.getX(), pos.getY() + a, pos.getZ() + b);
+			case Y -> out.set(pos.getX() + a, pos.getY(), pos.getZ() + b);
+			case Z -> out.set(pos.getX() + a, pos.getY() + b, pos.getZ());
+		};
+	}
+
 	public static boolean isMineable(final BlockState state) {
 		return state.is(BlockTags.MINEABLE_WITH_PICKAXE) || state.is(BlockTags.MINEABLE_WITH_SHOVEL);
 	}

@@ -16,6 +16,30 @@ import java.util.Map;
 
 public final class RingHelper {
 
+	public static final Identifier JADE_SPEED = Essentialis.id("jade_speed");
+
+	public static final Identifier JADE_JUMP = Essentialis.id("jade_jump");
+
+	public static final Identifier TOPAZ_LUCK = Essentialis.id("topaz_luck");
+
+	public static final Identifier SAPPHIRE_WATER = Essentialis.id("sapphire_water");
+
+	public static final Identifier SAPPHIRE_OXYGEN = Essentialis.id("sapphire_oxygen");
+
+	public static final Identifier VEHICLE_SPEED = Essentialis.id("vehicle_speed");
+
+	public static final Identifier VEHICLE_JUMP = Essentialis.id("vehicle_jump");
+
+	private static final Map<RingFamily, RingKind> NORMAL_KIND = new EnumMap<>(RingFamily.class);
+
+	private static final Map<RingFamily, RingKind> NETHERITE_KIND = new EnumMap<>(RingFamily.class);
+
+	static {
+		for (final RingKind kind : RingKind.values()) {
+			(kind.netherite ? NETHERITE_KIND : NORMAL_KIND).put(kind.family(), kind);
+		}
+	}
+
 	private RingHelper() {
 	}
 
@@ -41,27 +65,11 @@ public final class RingHelper {
 	}
 
 	public static int normal(final Map<RingKind, Integer> counts, final RingFamily family) {
-		int total = 0;
-
-		for (final RingKind kind : RingKind.values()) {
-			if (!kind.netherite && kind.family() == family) {
-				total += counts.getOrDefault(kind, 0);
-			}
-		}
-
-		return total;
+		return counts.getOrDefault(NORMAL_KIND.get(family), 0);
 	}
 
 	public static int netherite(final Map<RingKind, Integer> counts, final RingFamily family) {
-		int total = 0;
-
-		for (final RingKind kind : RingKind.values()) {
-			if (kind.netherite && kind.family() == family) {
-				total += counts.getOrDefault(kind, 0);
-			}
-		}
-
-		return total;
+		return counts.getOrDefault(NETHERITE_KIND.get(family), 0);
 	}
 
 	public static void setModifier(
@@ -91,9 +99,5 @@ public final class RingHelper {
 			instance.removeModifier(id);
 			instance.addTransientModifier(new AttributeModifier(id, amount, operation));
 		}
-	}
-
-	public static Identifier id(final String path) {
-		return Essentialis.id(path);
 	}
 }

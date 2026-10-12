@@ -6,7 +6,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.component.TooltipDisplay;
 
-import java.util.List;
 import java.util.function.Consumer;
 
 public class RingItem extends Item {
@@ -35,9 +34,5 @@ public class RingItem extends Item {
 		for (final Component line : RingTooltips.lines(this.kind)) {
 			builder.accept(line);
 		}
-	}
-
-	public static List<RingKind> all() {
-		return List.of(RingKind.values());
 	}
 }

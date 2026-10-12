@@ -15,14 +15,12 @@ import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.ToolMaterial;
 import net.minecraft.world.item.component.AttackRange;
 import net.minecraft.world.item.component.Tool;
 import net.minecraft.world.item.equipment.Equippable;
-import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
 
 import java.util.EnumMap;
@@ -109,10 +107,6 @@ public final class EssentialisItems {
 		final ResourceKey<Item> key = ResourceKey.create(Registries.ITEM, Essentialis.id(name));
 
 		return Registry.register(BuiltInRegistries.ITEM, key, factory.apply(key));
-	}
-
-	public static ItemStack stack(final ItemLike item) {
-		return item.asItem().getDefaultInstance();
 	}
 
 	public static void init() {

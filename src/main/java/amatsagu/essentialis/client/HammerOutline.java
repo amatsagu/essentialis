@@ -19,6 +19,8 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 
 public final class HammerOutline {
 
+	private static final BlockPos.MutableBlockPos SCRATCH = new BlockPos.MutableBlockPos();
+
 	private HammerOutline() {
 	}
 
@@ -56,17 +58,17 @@ public final class HammerOutline {
 					continue;
 				}
 
-				final BlockPos target = HammerUtil.offset(center, axis, a, b);
-				final BlockState state = level.getBlockState(target);
+				HammerUtil.offsetInto(SCRATCH, center, axis, a, b);
+				final BlockState state = level.getBlockState(SCRATCH);
 
 				if (state.isAir() || !HammerUtil.isMineable(state)) {
 					continue;
 				}
 
-				final VoxelShape shape = state.getShape(level, target, collision).move(
-					target.getX() - center.getX(),
-					target.getY() - center.getY(),
-					target.getZ() - center.getZ()
+				final VoxelShape shape = state.getShape(level, SCRATCH, collision).move(
+					SCRATCH.getX() - center.getX(),
+					SCRATCH.getY() - center.getY(),
+					SCRATCH.getZ() - center.getZ()
 				);
 
 				combined = Shapes.or(combined, shape);
