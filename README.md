@@ -19,7 +19,7 @@ A mid-range throwing weapon crafted from echo shards and a breeze rod. **Right c
 chakram: it flies out, spins, bounces off terrain and returns to your hand.
 
 - Repairable with **echo shards**.
-- Ramps off walls to build speed and reach (up to 5 wall bounces are rewarded by Ricochet).
+- Ramps off walls to build reach (up to 10 bounces per throw, each rewarded by Ricochet).
 - Can be thrown from either hand and returns to the hand it was thrown from.
 - Special interactions: cuts down crops with Harvesting, makes Endermen blink away, and triggers
   target blocks on impact.
