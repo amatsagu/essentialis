@@ -73,7 +73,11 @@ public final class RingLoot {
 		BuiltInLootTables.BURIED_TREASURE
 	);
 
-	private static final List<ResourceKey<LootTable>> WATER_ARCHAEOLOGY = List.of(
+	private static final List<ResourceKey<LootTable>> ALL_ARCHAEOLOGY = List.of(
+		BuiltInLootTables.DESERT_WELL_ARCHAEOLOGY,
+		BuiltInLootTables.DESERT_PYRAMID_ARCHAEOLOGY,
+		BuiltInLootTables.TRAIL_RUINS_ARCHAEOLOGY_COMMON,
+		BuiltInLootTables.TRAIL_RUINS_ARCHAEOLOGY_RARE,
 		BuiltInLootTables.OCEAN_RUIN_WARM_ARCHAEOLOGY,
 		BuiltInLootTables.OCEAN_RUIN_COLD_ARCHAEOLOGY
 	);
@@ -104,8 +108,10 @@ public final class RingLoot {
 				add(tableBuilder, EssentialisItems.RINGS.get(RingKind.SAPPHIRE), 2);
 			}
 
-			if (WATER_ARCHAEOLOGY.contains(key)) {
+			if (ALL_ARCHAEOLOGY.contains(key)) {
 				add(tableBuilder, EssentialisItems.RINGS.get(RingKind.SAPPHIRE), 3);
+				add(tableBuilder, EssentialisItems.RINGS.get(RingKind.CITRINE), 3);
+				add(tableBuilder, EssentialisItems.RINGS.get(RingKind.RUBY), 3);
 			}
 
 			if (key.equals(entity("drowned"))) {
