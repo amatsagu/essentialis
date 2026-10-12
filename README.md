@@ -7,7 +7,7 @@
 </div>
 
 ## About this mod
-**Essentialis** is a Fabric mod that unique, hand-crafted items to Minecraft. Some of them are completely new, some were created by other people (check credits below) but we rewritten them to be native java mod (+ optimized).
+**Essentialis** is a Fabric mod that adds unique items to Minecraft. Some of them are completely new, some were created by other people (check credits below) but we rewritten them to be native java mod (+ optimized).
 
 The current items are the **Echo Chakram** (a faithful native port of the popular
 [*Chakram*](https://modrinth.com/datapack/chakram) data pack by maybejake & evergreenavery), the
@@ -36,6 +36,23 @@ chakram: it flies out, spins, bounces off terrain and returns to your hand.
 The enchantments can be found on enchanted books in **ancient city** chests (or applied at an
 enchanting table, as chakram is a sword-class weapon).
 
+## The Hammer
+A heavy mining tool that works as a combination of **iron pickaxe** and **iron shovel** - breaking a
+**3x3 area** with every swing.
+
+- Same mining speed and stats as an iron pickaxe.
+- Repairable with **iron blocks**.
+- Supports the same enchantments as iron pickaxes and shovels (Efficiency, Fortune, Silk Touch, ...).
+- Supports UI highlight for blocks before breaking them.
+
+## The Wayback Stone
+A charm that cheats death. When player is about to die, it leaves them on **one heart** and
+teleports to respawn point.
+
+- Works from a trinket **ring slot** (with Trinkets Updated installed) or from either hand.
+- Has 15 minute use cooldown. Stone itself is never consumed.
+- Also grants 30 seconds of fire resistance.
+
 ## Credits
 - Original *Chakram* data pack concept and assets by **maybejake** and **evergreenavery**
   (MIT licensed). The chakram texture/icon come from that project.
@@ -47,4 +64,4 @@ enchanting table, as chakram is a sword-class weapon).
 > Some of the datapack -> java code transpilation was handled with help of artificial intelligence. This mod can be viewed publicly so clients running Essentia 2 Modpack can properly resolve files & check for updates. This mod can be launched standalone but it was prepared with this modpack in mind.
 
 ## License
-All Rights Reserved.
+All Rights Reserved with exception of elements taken directly from credited works.
