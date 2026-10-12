@@ -14,8 +14,8 @@ The current items are the **Echo Chakram** (a faithful native port of the popula
 **Hammer** (a combined iron pickaxe/shovel that mines in a 3x3) and the **Wayback Stone** (a
 death-saving charm with a teleport home).
 
-## The Echo Chakram
-<img src="src/main/resources/assets/essentialis/textures/item/chakram.png" width="32" />&nbsp; A mid-range throwing weapon crafted from echo shards and a breeze rod. **Right click** to throw the
+## <img src="src/main/resources/assets/essentialis/textures/item/chakram.png" width="32" align="middle" /> The Echo Chakram
+A mid-range throwing weapon crafted from echo shards and a breeze rod. **Right click** to throw the
 chakram: it flies out, spins, bounces off terrain and returns to the player's hand.
 
 - Repairable with **echo shards**.
@@ -37,8 +37,8 @@ chakram: it flies out, spins, bounces off terrain and returns to the player's ha
 The enchantments can be found on enchanted books in **ancient city** chests (or applied at an
 enchanting table, as chakram is a sword-class weapon).
 
-## The Hammer
-<img src="src/main/resources/assets/essentialis/textures/item/hammer.png" width="32" />&nbsp; A heavy mining tool that works as a combination of **iron pickaxe** and **iron shovel** - breaking a
+## <img src="src/main/resources/assets/essentialis/textures/item/hammer.png" width="32" align="middle" /> The Hammer
+A heavy mining tool that works as a combination of **iron pickaxe** and **iron shovel** - breaking a
 **3x3 area** with every swing.
 
 - Same mining speed and stats as an iron pickaxe.
@@ -46,8 +46,8 @@ enchanting table, as chakram is a sword-class weapon).
 - Supports the same enchantments as iron pickaxes and shovels (Efficiency, Fortune, Silk Touch, ...).
 - Supports UI highlight for blocks before breaking them.
 
-## The Wayback Stone
-<img src="src/main/resources/assets/essentialis/textures/item/wayback_stone.png" width="32" />&nbsp; A charm that cheats death. When player is about to die, it leaves them on **one heart** and
+## <img src="src/main/resources/assets/essentialis/textures/item/wayback_stone.png" width="32" align="middle" /> The Wayback Stone
+A charm that cheats death. When player is about to die, it leaves them on **one heart** and
 teleports to respawn point.
 
 - Works from a trinket **ring slot** (with Trinkets Updated installed) or from either hand.
