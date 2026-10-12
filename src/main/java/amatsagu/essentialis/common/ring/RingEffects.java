@@ -121,7 +121,6 @@ public final class RingEffects {
 		final int jade = RingHelper.normal(rings, RingFamily.JADE);
 		final int netherJade = RingHelper.netherite(rings, RingFamily.JADE);
 		final int topazLuck = RingHelper.normal(rings, RingFamily.TOPAZ) + 2 * RingHelper.netherite(rings, RingFamily.TOPAZ);
-		final int sapphire = RingHelper.normal(rings, RingFamily.SAPPHIRE) + RingHelper.netherite(rings, RingFamily.SAPPHIRE);
 
 		final double speedBonus = 0.1D * jade + 0.2D * netherJade;
 
@@ -129,14 +128,14 @@ public final class RingEffects {
 		RingHelper.setModifier(player, Attributes.JUMP_STRENGTH, RingHelper.id("jade_jump"), speedBonus, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL);
 		RingHelper.setModifier(player, Attributes.LUCK, RingHelper.id("topaz_luck"), topazLuck, AttributeModifier.Operation.ADD_VALUE);
 
-		final double waterBonus = RingHelper.netherite(rings, RingFamily.SAPPHIRE) > 0 ? 0.5D : (sapphire > 0 ? 0.25D : 0.0D);
-		final double oxygenBonus = RingHelper.netherite(rings, RingFamily.SAPPHIRE) > 0 ? 0.5D : 0.0D;
+		final double waterBonus = 0.25D * RingHelper.normal(rings, RingFamily.SAPPHIRE) + 0.5D * RingHelper.netherite(rings, RingFamily.SAPPHIRE);
+		final double oxygenBonus = 0.5D * RingHelper.netherite(rings, RingFamily.SAPPHIRE);
 
 		RingHelper.setModifier(player, Attributes.WATER_MOVEMENT_EFFICIENCY, RingHelper.id("sapphire_water"), waterBonus, AttributeModifier.Operation.ADD_VALUE);
 		RingHelper.setModifier(player, Attributes.OXYGEN_BONUS, RingHelper.id("sapphire_oxygen"), oxygenBonus, AttributeModifier.Operation.ADD_VALUE);
 
 		tickVehicle(player, 0.2D * netherJade);
-		tickSapphire(player, sapphire > 0, RingHelper.netherite(rings, RingFamily.SAPPHIRE) > 0);
+		tickSapphire(player, RingHelper.normal(rings, RingFamily.SAPPHIRE), RingHelper.netherite(rings, RingFamily.SAPPHIRE));
 	}
 
 	public static void playTanzaniteSound(final ServerPlayer player) {
@@ -187,23 +186,25 @@ public final class RingEffects {
 		}
 	}
 
-	private static void tickSapphire(final ServerPlayer player, final boolean active, final boolean netherite) {
-		if (active) {
-			final int fire = player.getRemainingFireTicks();
-
-			if (fire > 0 && fire % (netherite ? 1 : 3) == 0) {
-				player.setRemainingFireTicks(fire - 1);
-			}
-
-			if (player.isInLava()) {
-				final double factor = netherite ? 1.5D : 1.25D;
-				final Vec3 motion = player.getDeltaMovement();
-
-				player.setDeltaMovement(motion.x * factor, motion.y, motion.z * factor);
-			}
+	private static void tickSapphire(final ServerPlayer player, final int normal, final int netherite) {
+		if (normal + netherite == 0) {
+			return;
 		}
 
-		if (netherite && player.isUnderWater()) {
+		final int fire = player.getRemainingFireTicks();
+
+		if (fire > 0 && player.getRandom().nextFloat() < Math.min(1.0D, normal / 3.0D + netherite)) {
+			player.setRemainingFireTicks(fire - 1);
+		}
+
+		if (player.isInLava()) {
+			final double factor = 1.0D + 0.25D * normal + 0.5D * netherite;
+			final Vec3 motion = player.getDeltaMovement();
+
+			player.setDeltaMovement(motion.x * factor, motion.y, motion.z * factor);
+		}
+
+		if (netherite > 0 && player.isUnderWater()) {
 			final int air = player.getAirSupply();
 
 			if (air < player.getMaxAirSupply() && air % 3 == 0) {
@@ -411,6 +412,10 @@ public final class RingEffects {
 			if (!drop.isEmpty()) {
 				bonus.add(drop.copy());
 			}
+		}
+
+		if (bonus.isEmpty()) {
+			return;
 		}
 
 		drops.addAll(bonus);
