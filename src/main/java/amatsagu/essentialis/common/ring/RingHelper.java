@@ -30,6 +30,8 @@ public final class RingHelper {
 
 	public static final Identifier VEHICLE_JUMP = Essentialis.id("vehicle_jump");
 
+	public static final Identifier VEHICLE_FLYING_SPEED = Essentialis.id("vehicle_flying_speed");
+
 	private static final Map<RingFamily, RingKind> NORMAL_KIND = new EnumMap<>(RingFamily.class);
 
 	private static final Map<RingFamily, RingKind> NETHERITE_KIND = new EnumMap<>(RingFamily.class);

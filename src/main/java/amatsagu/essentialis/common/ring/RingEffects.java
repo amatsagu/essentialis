@@ -180,6 +180,7 @@ public final class RingEffects {
 		if (current instanceof LivingEntity living) {
 			RingHelper.setModifier(living, Attributes.MOVEMENT_SPEED, RingHelper.VEHICLE_SPEED, bonus, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL);
 			RingHelper.setModifier(living, Attributes.JUMP_STRENGTH, RingHelper.VEHICLE_JUMP, bonus, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL);
+			RingHelper.setModifier(living, Attributes.FLYING_SPEED, RingHelper.VEHICLE_FLYING_SPEED, bonus, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL);
 		} else if (bonus > 0.0D && current instanceof VehicleEntity) {
 			final Vec3 motion = current.getDeltaMovement();
 			current.setDeltaMovement(motion.x * (1.0D + bonus), motion.y, motion.z * (1.0D + bonus));
@@ -189,6 +190,7 @@ public final class RingEffects {
 	private static void clearVehicleModifiers(final LivingEntity vehicle) {
 		RingHelper.setModifier(vehicle, Attributes.MOVEMENT_SPEED, RingHelper.VEHICLE_SPEED, 0.0D, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL);
 		RingHelper.setModifier(vehicle, Attributes.JUMP_STRENGTH, RingHelper.VEHICLE_JUMP, 0.0D, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL);
+		RingHelper.setModifier(vehicle, Attributes.FLYING_SPEED, RingHelper.VEHICLE_FLYING_SPEED, 0.0D, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL);
 	}
 
 	private static void tickSapphire(final ServerPlayer player, final int normal, final int netherite) {
