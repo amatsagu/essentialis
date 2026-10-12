@@ -33,6 +33,7 @@
     "fabric-api": "*"
   },
   "recommends": {
-    "trinkets": "*"
+    "trinkets": "*",
+    "penchant": ">=0.5.7+mc26.3"
   }
 }

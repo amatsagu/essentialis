@@ -2,6 +2,7 @@ package amatsagu.essentialis;
 
 import amatsagu.essentialis.common.HammerMining;
 import amatsagu.essentialis.common.WaybackStoneEffect;
+import amatsagu.essentialis.compat.penchant.PenchantCompat;
 import amatsagu.essentialis.common.enchantment.EssentialisEnchantments;
 import amatsagu.essentialis.common.loot.EssentialisLoot;
 import amatsagu.essentialis.common.registry.EssentialisCreativeTabs;
@@ -31,6 +32,7 @@ public class Essentialis implements ModInitializer {
 		EssentialisLoot.init();
 		HammerMining.init();
 		WaybackStoneEffect.init();
+		PenchantCompat.init();
 
 		LOGGER.info("Essentialis initialized successfully!");
 	}

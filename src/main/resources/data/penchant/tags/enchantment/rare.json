@@ -1,0 +1,9 @@
+{
+  "replace": false,
+  "values": [
+    "essentialis:bouncing",
+    "essentialis:lightweight",
+    "essentialis:phasing",
+    "essentialis:ricochet"
+  ]
+}

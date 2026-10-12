@@ -53,6 +53,10 @@ teleports to respawn point.
 - Has 15 minute use cooldown. Stone itself is never consumed.
 - Also grants 30 seconds of fire resistance.
 
+## Compatibility
+- [Trinkets Updated](https://modrinth.com/mod/trinkets-updated): the Wayback Stone can be worn in a ring slot.
+- [Penchant](https://modrinth.com/mod/penchant) (0.5.7+): chakram enchantments level up through use, like vanilla ones.
+
 ## Credits
 - Original *Chakram* data pack concept and assets by **maybejake** and **evergreenavery**
   (MIT licensed). The chakram texture/icon come from that project.

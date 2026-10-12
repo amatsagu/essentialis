@@ -25,24 +25,27 @@ dependencies {
 	implementation("net.fabricmc:fabric-loader:${loader_version}")
 	implementation("net.fabricmc.fabric-api:fabric-api:${fabric_api_version}")
 	compileOnly("${trinkets_maven_group}:${trinkets_mod_id}:${trinkets_version}")
+	compileOnly("${penchant_maven_group}:${penchant_mod_id}:${penchant_version}")
 }
 
-def trinketsJar = file("maven-local/${trinkets_maven_group.replace('.', '/')}/${trinkets_mod_id}/${trinkets_version}/${trinkets_mod_id}-${trinkets_version}.jar")
+def localJar = { group, mod, version ->
+	file("maven-local/${group.replace('.', '/')}/${mod}/${version}/${mod}-${version}.jar")
+}
 
-def ensureTrinketsApi = {
-	trinketsJar.parentFile.mkdirs()
+def ensureLocalJar = { jar, url, sha512 ->
+	jar.parentFile.mkdirs()
 
-	if (!trinketsJar.exists()) {
+	if (!jar.exists()) {
 		try {
-			new URL(trinkets_download_url)
-				.withInputStream { input -> trinketsJar.withOutputStream { output -> output << input } }
+			new URL(url)
+				.withInputStream { input -> jar.withOutputStream { output -> output << input } }
 		} catch (Exception e) {
-			throw new GradleException("Could not download the Trinkets Updated API jar. Build once with network access.", e)
+			throw new GradleException("Could not download ${jar.name}. Build once with network access.", e)
 		}
 	}
 
 	def digest = java.security.MessageDigest.getInstance("SHA-512")
-	trinketsJar.withInputStream { input ->
+	jar.withInputStream { input ->
 		byte[] buffer = new byte[8192]
 		int read
 		while ((read = input.read(buffer)) != -1) {
@@ -51,25 +54,40 @@ def ensureTrinketsApi = {
 	}
 
 	def actual = digest.digest().encodeHex().toString()
-	if (actual != trinkets_sha512) {
-		throw new GradleException("Trinkets API jar checksum mismatch: " + actual)
+	if (actual != sha512) {
+		throw new GradleException("${jar.name} checksum mismatch: " + actual)
 	}
 }
 
+def trinketsJar = localJar(trinkets_maven_group, trinkets_mod_id, trinkets_version)
+def penchantJar = localJar(penchant_maven_group, penchant_mod_id, penchant_version)
+
 if (!trinketsJar.exists()) {
-	ensureTrinketsApi()
+	ensureLocalJar(trinketsJar, trinkets_download_url, trinkets_sha512)
+}
+
+if (!penchantJar.exists()) {
+	ensureLocalJar(penchantJar, penchant_download_url, penchant_sha512)
 }
 
 tasks.register("downloadTrinketsApi") {
 	outputs.file(trinketsJar)
 
 	doLast {
-		ensureTrinketsApi()
+		ensureLocalJar(trinketsJar, trinkets_download_url, trinkets_sha512)
+	}
+}
+
+tasks.register("downloadPenchantApi") {
+	outputs.file(penchantJar)
+
+	doLast {
+		ensureLocalJar(penchantJar, penchant_download_url, penchant_sha512)
 	}
 }
 
 tasks.named("compileJava") {
-	dependsOn("downloadTrinketsApi")
+	dependsOn("downloadTrinketsApi", "downloadPenchantApi")
 }
 
 processResources {

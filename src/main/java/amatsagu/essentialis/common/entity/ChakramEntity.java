@@ -3,6 +3,7 @@ package amatsagu.essentialis.common.entity;
 import amatsagu.essentialis.common.EssentialisTags;
 import amatsagu.essentialis.common.enchantment.EssentialisEnchantments;
 import amatsagu.essentialis.common.registry.EssentialisEntities;
+import amatsagu.essentialis.compat.penchant.PenchantCompat;
 import com.mojang.math.Transformation;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ItemParticleOption;
@@ -605,6 +606,11 @@ public class ChakramEntity extends Display.ItemDisplay {
 
 		if (!stack.isDamageableItem()) {
 			return;
+		}
+
+		if (!this.creativeThrow) {
+			final Entity owner = this.getOwnerEntity();
+			PenchantCompat.onChakramHit(owner instanceof LivingEntity living ? living : null, stack);
 		}
 
 		final int amount = EnchantmentHelper.processDurabilityChange(level, stack, 1);
