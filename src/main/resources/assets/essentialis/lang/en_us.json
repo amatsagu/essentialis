@@ -1,6 +1,8 @@
 {
   "item.essentialis.chakram": "Chakram",
+  "item.essentialis.chakram.desc": "Throw it to strike enemies from afar. It bounces off blocks and returns to you.",
   "item.essentialis.hammer": "Hammer",
+  "item.essentialis.hammer.desc": "Mines a 3x3 area like an iron pickaxe and shovel combined. Repaired with iron blocks.",
   "entity.essentialis.chakram": "Chakram",
 
   "enchantment.essentialis.bouncing": "Bouncing",
