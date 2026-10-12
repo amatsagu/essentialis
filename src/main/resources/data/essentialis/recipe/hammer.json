@@ -2,14 +2,14 @@
   "type": "minecraft:crafting_shaped",
   "category": "equipment",
   "pattern": [
-    " ii",
-    " si",
-    "b  "
+    "iii",
+    "csc",
+    " s "
   ],
   "key": {
     "i": "minecraft:iron_block",
-    "s": "minecraft:stick",
-    "b": "minecraft:blaze_rod"
+    "c": "minecraft:leather_chestplate",
+    "s": "minecraft:stick"
   },
   "result": {
     "id": "essentialis:hammer",

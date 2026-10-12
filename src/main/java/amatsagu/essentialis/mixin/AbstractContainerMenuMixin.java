@@ -8,7 +8,6 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerListener;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
@@ -23,18 +22,18 @@ public abstract class AbstractContainerMenuMixin {
 			target = "Lnet/minecraft/world/inventory/ContainerListener;slotChanged(Lnet/minecraft/world/inventory/AbstractContainerMenu;ILnet/minecraft/world/item/ItemStack;)V"
 		)
 	)
-	private void essentialis$unlockChakramOnEchoShard(
+	private void essentialis$unlockRecipes(
 		final ContainerListener listener,
 		final AbstractContainerMenu menu,
 		final int slotIndex,
 		final ItemStack stack
 	) {
-		if (stack.is(Items.ECHO_SHARD)) {
+		if (!stack.isEmpty()) {
 			final Slot slot = menu.getSlot(slotIndex);
 			final Container container = slot.container;
 
 			if (container instanceof Inventory inventory && inventory.player instanceof ServerPlayer player) {
-				EssentialisRecipes.unlockChakram(player);
+				EssentialisRecipes.unlockForIngredient(player, stack);
 			}
 		}
 
