@@ -14,7 +14,7 @@ The current items are the **Echo Chakram** (a faithful native port of the popula
 **Hammer** (a combined iron pickaxe/shovel that mines in a 3x3) and the **Wayback Stone** (a
 death-saving charm with a teleport home).
 
-## <img src="src/main/resources/assets/essentialis/textures/item/chakram.png" width="32" align="middle" /> The Echo Chakram
+## <img src="src/main/resources/assets/essentialis/textures/item/chakram.png" width="32" align="top" /> The Echo Chakram
 A mid-range throwing weapon crafted from echo shards and a breeze rod. **Right click** to throw the
 chakram: it flies out, spins, bounces off terrain and returns to the player's hand.
 
@@ -37,7 +37,7 @@ chakram: it flies out, spins, bounces off terrain and returns to the player's ha
 The enchantments can be found on enchanted books in **ancient city** chests (or applied at an
 enchanting table, as chakram is a sword-class weapon).
 
-## <img src="src/main/resources/assets/essentialis/textures/item/hammer.png" width="32" align="middle" /> The Hammer
+## <img src="src/main/resources/assets/essentialis/textures/item/hammer.png" width="32" align="top" /> The Hammer
 A heavy mining tool that works as a combination of **iron pickaxe** and **iron shovel** - breaking a
 **3x3 area** with every swing.
 
@@ -46,7 +46,7 @@ A heavy mining tool that works as a combination of **iron pickaxe** and **iron s
 - Supports the same enchantments as iron pickaxes and shovels (Efficiency, Fortune, Silk Touch, ...).
 - Supports UI highlight for blocks before breaking them.
 
-## <img src="src/main/resources/assets/essentialis/textures/item/wayback_stone.png" width="32" align="middle" /> The Wayback Stone
+## <img src="src/main/resources/assets/essentialis/textures/item/wayback_stone.png" width="32" align="top" /> The Wayback Stone
 A charm that cheats death. When player is about to die, it leaves them on **one heart** and
 teleports to respawn point.
 
