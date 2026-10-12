@@ -1,0 +1,19 @@
+{
+  "item.essentialis.chakram": "Chakram",
+  "item.essentialis.hammer": "Hammer",
+  "entity.essentialis.chakram": "Chakram",
+
+  "enchantment.essentialis.bouncing": "Bouncing",
+  "enchantment.essentialis.harvesting": "Harvesting",
+  "enchantment.essentialis.lightweight": "Lightweight",
+  "enchantment.essentialis.phasing": "Phasing",
+  "enchantment.essentialis.ricochet": "Ricochet",
+
+  "enchantment.essentialis.bouncing.desc": "Allows the chakram to ricochet to a nearby enemy after a hit. Each level adds one ricochet.",
+  "enchantment.essentialis.harvesting.desc": "Harvests crops and foliage the chakram flies through.",
+  "enchantment.essentialis.lightweight.desc": "Increases the chakram's flight range by 7.5 blocks per level.",
+  "enchantment.essentialis.phasing.desc": "Allows the chakram to pass through enemies. Each level pierces one additional enemy.",
+  "enchantment.essentialis.ricochet.desc": "Increases damage for each block the chakram has bounced off, plus 0.5 damage per level.",
+
+  "tag.item.essentialis.enchantable.chakram": "Chakram"
+}

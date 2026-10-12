@@ -1,0 +1,24 @@
+{
+  "anvil_cost": 4,
+  "description": {
+    "translate": "enchantment.essentialis.phasing"
+  },
+  "effects": {},
+  "exclusive_set": "essentialis:bouncing",
+  "max_cost": {
+    "base": 65,
+    "per_level_above_first": 9
+  },
+  "max_level": 5,
+  "min_cost": {
+    "base": 15,
+    "per_level_above_first": 9
+  },
+  "primary_items": "#essentialis:enchantable/chakram",
+  "slots": [
+    "mainhand",
+    "offhand"
+  ],
+  "supported_items": "#essentialis:enchantable/chakram",
+  "weight": 1
+}

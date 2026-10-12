@@ -1,0 +1,35 @@
+{
+  "schemaVersion": 1,
+  "id": "${mod_id}",
+  "version": "${version}",
+  "name": "${mod_name}",
+  "description": "${mod_description}",
+  "authors": [
+    "Amatsagu"
+  ],
+  "contact": {
+    "homepage": "https://github.com/amatsagu/${project_name}",
+    "sources": "https://github.com/amatsagu/${project_name}",
+    "issues": "https://github.com/amatsagu/${project_name}/issues"
+  },
+  "license": "All Rights Reserved",
+  "icon": "assets/${mod_id}/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "amatsagu.essentialis.Essentialis"
+    ],
+    "client": [
+      "amatsagu.essentialis.client.EssentialisClient"
+    ]
+  },
+  "mixins": [
+    "${mod_id}.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": "*",
+    "minecraft": "~26.3",
+    "java": ">=25",
+    "fabric-api": "*"
+  }
+}

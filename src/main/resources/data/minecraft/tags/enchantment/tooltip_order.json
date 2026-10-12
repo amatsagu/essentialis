@@ -1,0 +1,10 @@
+{
+  "replace": false,
+  "values": [
+    "essentialis:bouncing",
+    "essentialis:harvesting",
+    "essentialis:lightweight",
+    "essentialis:phasing",
+    "essentialis:ricochet"
+  ]
+}
