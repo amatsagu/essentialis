@@ -45,6 +45,7 @@ public final class EssentialisItems {
 			.pickaxe(ToolMaterial.IRON, 1.0F, -2.8F)
 			.durability(HAMMER_DURABILITY)
 			.repairable(Items.IRON_BLOCK)
+			.rarity(Rarity.RARE)
 			.component(DataComponents.TOOL, createHammerTool())
 	));
 
