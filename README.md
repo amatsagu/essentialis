@@ -122,8 +122,8 @@ heart** and teleports you to your spawn point (bed or respawn anchor, following 
 rules including anchor charge use), grants **30 seconds of fire resistance** (with visible particles),
 then goes on a **15 minute cooldown** shared by all Wayback Stones.
 
-- Works from a trinket slot when [Trinkets Updated](https://modrinth.com/mod/trinkets-updated) is
-  installed (necklace slot), or from anywhere in your inventory without it.
+- Works from a trinket **ring slot** when [Trinkets Updated](https://modrinth.com/mod/trinkets-updated) is
+  installed, or from either hand without it.
 - Does nothing while on cooldown, in creative/spectator, or without a valid bed or charged anchor
   spawn — in those cases death proceeds normally.
 - The stone is not consumed; the cooldown is the cost.

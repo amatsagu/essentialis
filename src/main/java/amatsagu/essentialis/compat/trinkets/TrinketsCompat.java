@@ -18,10 +18,20 @@ public final class TrinketsCompat {
 		return loader.isModLoaded("trinkets_updated") || loader.isModLoaded("trinkets");
 	}
 
-	public static ItemStack findEquipped(final ServerPlayer player) {
-		return TrinketsApi.getAttachment(player)
-			.findFirst(EssentialisItems.WAYBACK_STONE)
-			.map(TrinketSlotAccess::get)
-			.orElse(ItemStack.EMPTY);
+	public static ItemStack findInRingSlot(final ServerPlayer player) {
+		for (final TrinketSlotAccess access : TrinketsApi.getAttachment(player)
+			.equipped(stack -> stack.is(EssentialisItems.WAYBACK_STONE), false)) {
+			if (isRingSlot(access)) {
+				return access.get();
+			}
+		}
+
+		return ItemStack.EMPTY;
+	}
+
+	private static boolean isRingSlot(final TrinketSlotAccess access) {
+		final String slot = access.reference().slot();
+
+		return slot.equals("ring") || slot.endsWith("/ring");
 	}
 }

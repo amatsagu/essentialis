@@ -9,6 +9,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
@@ -31,7 +32,7 @@ public final class WaybackStoneEffect {
 		ServerLivingEntityEvents.ALLOW_DEATH.register(WaybackStoneEffect::onAllowDeath);
 	}
 
-	private static boolean onAllowDeath(final LivingEntity entity, final net.minecraft.world.damagesource.DamageSource source, final float amount) {
+	private static boolean onAllowDeath(final LivingEntity entity, final DamageSource source, final float amount) {
 		if (!(entity instanceof ServerPlayer player) || player.isCreative() || player.isSpectator()) {
 			return true;
 		}
@@ -57,31 +58,36 @@ public final class WaybackStoneEffect {
 		player.getCooldowns().addCooldown(stone, COOLDOWN_TICKS);
 		player.awardStat(Stats.ITEM_USED.get(EssentialisItems.WAYBACK_STONE));
 
-		fromLevel.sendParticles(ParticleTypes.PORTAL, fromPos.x, fromPos.y + 1.0D, fromPos.z, 60, 0.4D, 0.8D, 0.4D, 0.1D);
-		fromLevel.playSound(null, fromPos.x, fromPos.y, fromPos.z, SoundEvents.ENDERMAN_TELEPORT, SoundSource.PLAYERS, 1.0F, 1.0F);
-
-		final ServerLevel toLevel = (ServerLevel) player.level();
-		final Vec3 toPos = player.position();
-
-		toLevel.sendParticles(ParticleTypes.PORTAL, toPos.x, toPos.y + 1.0D, toPos.z, 60, 0.4D, 0.8D, 0.4D, 0.1D);
-		toLevel.playSound(null, toPos.x, toPos.y, toPos.z, SoundEvents.ENDERMAN_TELEPORT, SoundSource.PLAYERS, 1.0F, 1.0F);
+		burst(fromLevel, fromPos);
+		burst((ServerLevel) player.level(), player.position());
 
 		return false;
 	}
 
+	private static void burst(final ServerLevel level, final Vec3 pos) {
+		level.sendParticles(ParticleTypes.PORTAL, pos.x, pos.y + 1.0D, pos.z, 60, 0.4D, 0.8D, 0.4D, 0.1D);
+		level.playSound(null, pos.x, pos.y, pos.z, SoundEvents.ENDERMAN_TELEPORT, SoundSource.PLAYERS, 1.0F, 1.0F);
+	}
+
 	private static ItemStack findStone(final ServerPlayer player) {
 		if (TrinketsCompat.isLoaded()) {
-			final ItemStack equipped = TrinketsCompat.findEquipped(player);
+			final ItemStack equipped = TrinketsCompat.findInRingSlot(player);
 
 			if (!equipped.isEmpty()) {
 				return equipped;
 			}
 		}
 
-		for (int i = 0; i < player.getInventory().getContainerSize(); i++) {
-			if (player.getInventory().getItem(i).is(EssentialisItems.WAYBACK_STONE)) {
-				return player.getInventory().getItem(i);
-			}
+		final ItemStack mainHand = player.getMainHandItem();
+
+		if (mainHand.is(EssentialisItems.WAYBACK_STONE)) {
+			return mainHand;
+		}
+
+		final ItemStack offHand = player.getOffhandItem();
+
+		if (offHand.is(EssentialisItems.WAYBACK_STONE)) {
+			return offHand;
 		}
 
 		return ItemStack.EMPTY;
