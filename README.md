@@ -32,6 +32,7 @@ chakram: it flies out, spins, bounces off terrain and returns to your hand.
 | **Lightweight** | 3 | Increases the chakram's maximum flight range by 7.5 blocks per level. |
 | **Phasing** | 5 | Lets the chakram pass through enemies (up to one per level) instead of returning on impact. Mutually exclusive with Bouncing. |
 | **Ricochet** | 5 | Adds bonus damage for every wall the chakram has bounced off. Mutually exclusive with Sharpness, Smite and Bane of Arthropods. |
+| **Scavenger** | 1 | Picks up items the chakram flies past and brings them back to you. |
 
 The enchantments can be found on enchanted books in **ancient city** chests (or applied at an
 enchanting table, as chakram is a sword-class weapon).

@@ -20,6 +20,8 @@ public final class EssentialisEnchantments {
 
 	public static final ResourceKey<Enchantment> RICOCHET = key("ricochet");
 
+	public static final ResourceKey<Enchantment> SCAVENGER = key("scavenger");
+
 	private EssentialisEnchantments() {
 	}
 

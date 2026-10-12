@@ -25,7 +25,8 @@ public final class EssentialisLoot {
 		new EnchantEntry(EssentialisEnchantments.HARVESTING, 1, 6),
 		new EnchantEntry(EssentialisEnchantments.LIGHTWEIGHT, 3, 13),
 		new EnchantEntry(EssentialisEnchantments.PHASING, 5, 13),
-		new EnchantEntry(EssentialisEnchantments.RICOCHET, 5, 13)
+		new EnchantEntry(EssentialisEnchantments.RICOCHET, 5, 13),
+		new EnchantEntry(EssentialisEnchantments.SCAVENGER, 1, 6)
 	);
 
 	private EssentialisLoot() {

@@ -1,6 +1,7 @@
 {
   "replace": false,
   "values": [
-    "essentialis:harvesting"
+    "essentialis:harvesting",
+    "essentialis:scavenger"
   ]
 }

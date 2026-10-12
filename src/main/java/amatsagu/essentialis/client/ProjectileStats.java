@@ -6,10 +6,10 @@ import amatsagu.essentialis.common.registry.EssentialisItems;
 import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.item.BowItem;
 import net.minecraft.world.item.CrossbowItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ProjectileWeaponItem;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.TridentItem;
 import net.minecraft.world.item.enchantment.Enchantments;
@@ -49,7 +49,8 @@ public final class ProjectileStats {
 		final List<Component> stats = statsFor(stack);
 
 		if (stats != null) {
-			lines.addAll(1, stats);
+			lines.add(1, Component.empty());
+			lines.addAll(2, stats);
 		}
 	}
 
@@ -58,7 +59,11 @@ public final class ProjectileStats {
 			return chakramStats(stack);
 		}
 
-		if (stack.getItem() instanceof BowItem) {
+		if (stack.getItem() instanceof CrossbowItem) {
+			return List.of(header("When Shot:"), stat("Projectile Damage", ARROW_DAMAGE));
+		}
+
+		if (stack.getItem() instanceof ProjectileWeaponItem) {
 			final int power = EssentialisEnchantments.getLevel(stack, Enchantments.POWER);
 			double damage = ARROW_DAMAGE;
 
@@ -67,10 +72,6 @@ public final class ProjectileStats {
 			}
 
 			return List.of(header("When Shot:"), stat("Projectile Damage", damage));
-		}
-
-		if (stack.getItem() instanceof CrossbowItem) {
-			return List.of(header("When Shot:"), stat("Projectile Damage", ARROW_DAMAGE));
 		}
 
 		if (stack.getItem() instanceof TridentItem) {
@@ -157,9 +158,7 @@ public final class ProjectileStats {
 	}
 
 	private static Component stat(final String label, final double value) {
-		return Component.literal(" ")
-			.append(Component.literal(number(value)).withStyle(ChatFormatting.DARK_GREEN))
-			.append(Component.literal(" " + label).withStyle(ChatFormatting.GRAY));
+		return Component.literal(" " + number(value) + " " + label).withStyle(ChatFormatting.DARK_GREEN);
 	}
 
 	private static String number(final double value) {

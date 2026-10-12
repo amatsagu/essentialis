@@ -22,6 +22,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.decoration.ArmorStand;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
@@ -68,6 +69,14 @@ public class ChakramEntity extends Display.ItemDisplay {
 	private static final double HIT_MARGIN = 0.35D;
 
 	private static final EntityTypeTest<Entity, LivingEntity> LIVING_TEST = EntityTypeTest.forClass(LivingEntity.class);
+
+	private static final EntityTypeTest<Entity, ItemEntity> ITEM_TEST = EntityTypeTest.forClass(ItemEntity.class);
+
+	private static final double SCAVENGE_RADIUS = 1.5D;
+
+	private static final int MAX_CARRIED_STACKS = 5;
+
+	private static final int MAX_CARRIED_TYPES = 5;
 
 	public static final int MAX_BOUNCES = 10;
 
@@ -117,6 +126,10 @@ public class ChakramEntity extends Display.ItemDisplay {
 
 	private final List<Entity> hitCandidates = new ArrayList<>();
 
+	private final List<ItemEntity> itemScratch = new ArrayList<>();
+
+	private final List<ItemStack> carried = new ArrayList<>();
+
 	private final BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
 
 	public ChakramEntity(final EntityType<ChakramEntity> type, final Level level) {
@@ -129,6 +142,14 @@ public class ChakramEntity extends Display.ItemDisplay {
 		this.ownerReference = EntityReference.of(owner);
 		this.throwHand = hand;
 		this.creativeThrow = owner.isCreative();
+
+		if (stack.isDamageableItem()) {
+			final int throwWear = EnchantmentHelper.processDurabilityChange(level, stack, 1);
+
+			if (throwWear > 0) {
+				stack.setDamageValue(Math.min(stack.getDamageValue() + throwWear, stack.getMaxDamage() - 1));
+			}
+		}
 
 		this.setItemStack(stack.copyWithCount(1));
 		this.setItemTransform(ItemDisplayContext.NONE);
@@ -187,6 +208,7 @@ public class ChakramEntity extends Display.ItemDisplay {
 		final ServerLevel level = (ServerLevel) this.level();
 
 		this.refreshHitCandidates(level);
+		this.scavenge(level);
 
 		for (int step = 0; step < STEPS_PER_TICK; step++) {
 			if (this.isRemoved()) {
@@ -292,6 +314,127 @@ public class ChakramEntity extends Display.ItemDisplay {
 		if (level.getBlockState(this.mutablePos).is(EssentialisTags.CHAKRAM_HARVESTING)) {
 			level.destroyBlock(this.mutablePos, true);
 		}
+	}
+
+	private void scavenge(final ServerLevel level) {
+		if (!EssentialisEnchantments.has(this.getItemStack(), EssentialisEnchantments.SCAVENGER)) {
+			return;
+		}
+
+		if (!this.canGain()) {
+			return;
+		}
+
+		final double x = this.getX();
+		final double y = this.getY();
+		final double z = this.getZ();
+
+		this.itemScratch.clear();
+		level.getEntities(
+			ITEM_TEST,
+			new AABB(x - SCAVENGE_RADIUS, y - SCAVENGE_RADIUS, z - SCAVENGE_RADIUS, x + SCAVENGE_RADIUS, y + SCAVENGE_RADIUS, z + SCAVENGE_RADIUS),
+			item -> !item.isRemoved(),
+			this.itemScratch
+		);
+
+		for (final ItemEntity item : this.itemScratch) {
+			if (this.isRemoved()) {
+				return;
+			}
+
+			this.tryCollect(item);
+		}
+
+		this.itemScratch.clear();
+	}
+
+	private void tryCollect(final ItemEntity entity) {
+		final ItemStack incoming = entity.getItem();
+
+		if (incoming.isEmpty()) {
+			return;
+		}
+
+		for (final ItemStack kept : this.carried) {
+			if (incoming.isEmpty()) {
+				break;
+			}
+
+			if (ItemStack.isSameItemSameComponents(kept, incoming)) {
+				final int room = kept.getMaxStackSize() - kept.getCount();
+
+				if (room > 0) {
+					final int move = Math.min(room, incoming.getCount());
+
+					kept.grow(move);
+					incoming.shrink(move);
+				}
+			}
+		}
+
+		if (!incoming.isEmpty() && this.carried.size() < MAX_CARRIED_STACKS && this.distinctCarried() < MAX_CARRIED_TYPES) {
+			this.carried.add(incoming.copy());
+			incoming.setCount(0);
+		}
+
+		if (incoming.isEmpty()) {
+			entity.discard();
+		}
+	}
+
+	private boolean canGain() {
+		if (this.carried.size() < MAX_CARRIED_STACKS && this.distinctCarried() < MAX_CARRIED_TYPES) {
+			return true;
+		}
+
+		for (final ItemStack stack : this.carried) {
+			if (stack.getCount() < stack.getMaxStackSize()) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	private int distinctCarried() {
+		int distinct = 0;
+
+		for (int i = 0; i < this.carried.size(); i++) {
+			boolean seen = false;
+
+			for (int j = 0; j < i; j++) {
+				if (ItemStack.isSameItemSameComponents(this.carried.get(i), this.carried.get(j))) {
+					seen = true;
+					break;
+				}
+			}
+
+			if (!seen) {
+				distinct++;
+			}
+		}
+
+		return distinct;
+	}
+
+	private void deliverCarried(final ServerLevel level, final ServerPlayer player) {
+		for (final ItemStack stack : this.carried) {
+			if (stack.isEmpty()) {
+				continue;
+			}
+
+			final ItemStack rest = stack.copy();
+
+			if (player != null) {
+				player.getInventory().add(rest);
+			}
+
+			if (!rest.isEmpty()) {
+				this.spawnAtLocation(level, rest, 0.1F);
+			}
+		}
+
+		this.carried.clear();
 	}
 
 	private void checkBounce(final ServerLevel level) {
@@ -642,6 +785,7 @@ public class ChakramEntity extends Display.ItemDisplay {
 			0.06D
 		);
 
+		this.deliverCarried(level, null);
 		this.discard();
 	}
 
@@ -708,6 +852,7 @@ public class ChakramEntity extends Display.ItemDisplay {
 			this.spawnAtLocation(level, stack, 0.1F);
 		}
 
+		this.deliverCarried(level, owner instanceof ServerPlayer carrier ? carrier : null);
 		this.discard();
 	}
 
@@ -716,6 +861,7 @@ public class ChakramEntity extends Display.ItemDisplay {
 			this.spawnAtLocation(level, this.getItemStack().copy(), 0.1F);
 		}
 
+		this.deliverCarried(level, null);
 		this.discard();
 	}
 
@@ -751,6 +897,15 @@ public class ChakramEntity extends Display.ItemDisplay {
 		this.bounces = input.getIntOr("Bounces", 0);
 		this.phasingCount = input.getIntOr("PhasingCount", 0);
 		this.bouncingCount = input.getIntOr("BouncingCount", 0);
+
+		this.carried.clear();
+		input.list("Carried", ItemStack.CODEC).ifPresent(list -> {
+			for (final ItemStack stack : list) {
+				if (!stack.isEmpty() && this.carried.size() < MAX_CARRIED_STACKS) {
+					this.carried.add(stack);
+				}
+			}
+		});
 	}
 
 	@Override
@@ -768,5 +923,15 @@ public class ChakramEntity extends Display.ItemDisplay {
 		output.putInt("Bounces", this.bounces);
 		output.putInt("PhasingCount", this.phasingCount);
 		output.putInt("BouncingCount", this.bouncingCount);
+
+		if (!this.carried.isEmpty()) {
+			final var carriedOut = output.list("Carried", ItemStack.CODEC);
+
+			for (final ItemStack stack : this.carried) {
+				if (!stack.isEmpty()) {
+					carriedOut.add(stack);
+				}
+			}
+		}
 	}
 }
