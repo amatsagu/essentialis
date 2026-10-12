@@ -19,8 +19,6 @@ import net.minecraft.world.phys.Vec3;
 
 public final class WaybackStoneEffect {
 
-	public static final int COOLDOWN_TICKS = 15 * 60 * 20;
-
 	public static final float SURVIVE_HEALTH = 2.0F;
 
 	public static final int FIRE_RESISTANCE_TICKS = 30 * 20;
@@ -41,7 +39,7 @@ public final class WaybackStoneEffect {
 	}
 
 	public static boolean tryTrigger(final ServerPlayer player, final ItemStack stone) {
-		if (stone.isEmpty() || player.getCooldowns().isOnCooldown(stone)) {
+		if (stone.isEmpty() || WaybackCooldowns.isOnCooldown(player)) {
 			return false;
 		}
 
@@ -51,20 +49,19 @@ public final class WaybackStoneEffect {
 			return false;
 		}
 
-		apply(player, stone, transition);
+		apply(player, transition);
 
 		return true;
 	}
 
-	private static void apply(final ServerPlayer player, final ItemStack stone, final TeleportTransition transition) {
-
+	private static void apply(final ServerPlayer player, final TeleportTransition transition) {
 		final ServerLevel fromLevel = (ServerLevel) player.level();
 		final Vec3 fromPos = player.position();
 
 		player.setHealth(SURVIVE_HEALTH);
 		player.addEffect(new MobEffectInstance(MobEffects.FIRE_RESISTANCE, FIRE_RESISTANCE_TICKS, 0, true, true));
 		player.teleport(transition);
-		player.getCooldowns().addCooldown(stone, COOLDOWN_TICKS);
+		WaybackCooldowns.start(player);
 		player.awardStat(Stats.ITEM_USED.get(EssentialisItems.WAYBACK_STONE));
 
 		burst(fromLevel, fromPos);

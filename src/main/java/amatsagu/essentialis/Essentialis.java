@@ -1,6 +1,7 @@
 package amatsagu.essentialis;
 
 import amatsagu.essentialis.common.HammerMining;
+import amatsagu.essentialis.common.WaybackCooldowns;
 import amatsagu.essentialis.common.WaybackStoneEffect;
 import amatsagu.essentialis.common.ring.RingEffects;
 import amatsagu.essentialis.common.ring.RingLoot;
@@ -37,6 +38,7 @@ public class Essentialis implements ModInitializer {
 		EssentialisCreativeTabs.init();
 		EssentialisLoot.init();
 		HammerMining.init();
+		WaybackCooldowns.init();
 		WaybackStoneEffect.init();
 		RingEffects.init();
 		RingLoot.init();

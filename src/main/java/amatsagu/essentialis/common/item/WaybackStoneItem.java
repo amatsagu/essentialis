@@ -1,5 +1,6 @@
 package amatsagu.essentialis.common.item;
 
+import amatsagu.essentialis.common.WaybackCooldowns;
 import amatsagu.essentialis.common.WaybackStoneEffect;
 import amatsagu.essentialis.common.registry.EssentialisSounds;
 import net.minecraft.ChatFormatting;
@@ -31,7 +32,7 @@ public class WaybackStoneItem extends Item {
 
 	@Override
 	public InteractionResult use(final Level level, final Player player, final InteractionHand hand) {
-		if (player.getCooldowns().isOnCooldown(player.getItemInHand(hand))) {
+		if (player instanceof ServerPlayer serverPlayer && WaybackCooldowns.isOnCooldown(serverPlayer)) {
 			return InteractionResult.FAIL;
 		}
 
