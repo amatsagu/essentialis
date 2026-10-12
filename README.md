@@ -16,7 +16,7 @@ death-saving charm with a teleport home).
 
 ## The Echo Chakram
 <img src="src/main/resources/assets/essentialis/textures/item/chakram.png" width="32" />&nbsp; A mid-range throwing weapon crafted from echo shards and a breeze rod. **Right click** to throw the
-chakram: it flies out, spins, bounces off terrain and returns to your hand.
+chakram: it flies out, spins, bounces off terrain and returns to the player's hand.
 
 - Repairable with **echo shards**.
 - Ramps off walls to build reach (up to 10 bounces per throw, each rewarded by Ricochet).
@@ -32,7 +32,7 @@ chakram: it flies out, spins, bounces off terrain and returns to your hand.
 | **Lightweight** | 3 | Increases the chakram's maximum flight range by 7.5 blocks per level. |
 | **Phasing** | 5 | Lets the chakram pass through enemies (up to one per level) instead of returning on impact. Mutually exclusive with Bouncing. |
 | **Ricochet** | 5 | Adds bonus damage for every wall the chakram has bounced off. Mutually exclusive with Sharpness, Smite and Bane of Arthropods. |
-| **Scavenger** | 1 | Picks up items the chakram flies past and brings them back to you. |
+| **Scavenger** | 1 | Picks up items the chakram flies past and brings them back to the player. |
 
 The enchantments can be found on enchanted books in **ancient city** chests (or applied at an
 enchanting table, as chakram is a sword-class weapon).
@@ -59,19 +59,14 @@ Trinkets with no durability. Work from a trinket **ring slot** (with Trinkets Up
 from either hand. Effects from multiple rings stack. Netherite versions are upgraded in a
 **smithing table** (ring + netherite ingot + upgrade template).
 
-- <img src="src/main/resources/assets/essentialis/textures/item/citrine_ring.png" width="32" />&nbsp; **Citrine Ring** - highlights enemies within **16 blocks** (red outline). Netherite: **32 blocks**
-  and ignites undead within 16 blocks. Rare loot (3%): mineshafts, outposts, mansions, suspicious sand/gravel.
-- <img src="src/main/resources/assets/essentialis/textures/item/jade_ring.png" width="32" />&nbsp; **Jade Ring** - **+10%** movement speed and jump height. Netherite: doubled, also works while
-  riding. Rare loot (2%): chests and barrels everywhere.
-- <img src="src/main/resources/assets/essentialis/textures/item/ruby_ring.png" width="32" />&nbsp; **Ruby Ring** - heals **5%** of the damage you deal. Netherite: doubled. Rare loot (2%): nether
-  fortresses and bastions. Rare loot (3%): suspicious sand/gravel.
-- <img src="src/main/resources/assets/essentialis/textures/item/sapphire_ring.png" width="32" />&nbsp; **Sapphire Ring** - **25%** shorter burn time, **+25%** speed in water and lava. Netherite: +50%
-  speed and longer breath. Rare loot (2%): ocean ruins, shipwrecks. Rare loot (3%): suspicious sand/gravel. Rare loot (1%): drowned kills.
-- <img src="src/main/resources/assets/essentialis/textures/item/tanzanite_ring.png" width="32" />&nbsp; **Tanzanite Ring** - doubles the duration of **any** effect on you. Netherite: positive effects
-  only. Rare loot (2%): witch and illager kills.
-- <img src="src/main/resources/assets/essentialis/textures/item/topaz_ring.png" width="32" />&nbsp; **Topaz Ring** - **+1** Luck. Netherite: +2 Luck and fortuitous finds (extra diamonds from lapis
-  and emerald ores, bonus harvests, trophies from slain foes, lucky catches and luckier chests). Rare
-  loot (2%): chests and barrels everywhere.
+| Icon | Ring |
+|---|---|
+| <img src="src/main/resources/assets/essentialis/textures/item/citrine_ring.png" width="32" /> | **Citrine Ring** - highlights enemies within **16 blocks** (red outline). Netherite: **32 blocks** and ignites undead within 16 blocks. Rare loot (3%): mineshafts, outposts, mansions, suspicious sand/gravel. |
+| <img src="src/main/resources/assets/essentialis/textures/item/jade_ring.png" width="32" /> | **Jade Ring** - **+10%** movement speed and jump height. Netherite: doubled, also works while riding. Rare loot (2%): chests and barrels everywhere. |
+| <img src="src/main/resources/assets/essentialis/textures/item/ruby_ring.png" width="32" /> | **Ruby Ring** - heals **5%** of the damage dealt by the player. Netherite: doubled. Rare loot (2%): nether fortresses and bastions. Rare loot (3%): suspicious sand/gravel. |
+| <img src="src/main/resources/assets/essentialis/textures/item/sapphire_ring.png" width="32" /> | **Sapphire Ring** - **25%** shorter burn time, **+25%** speed in water and lava. Netherite: +50% speed and longer breath. Rare loot (2%): ocean ruins, shipwrecks. Rare loot (3%): suspicious sand/gravel. Rare loot (1%): drowned kills. |
+| <img src="src/main/resources/assets/essentialis/textures/item/tanzanite_ring.png" width="32" /> | **Tanzanite Ring** - doubles the duration of **any** effect on the player. Netherite: positive effects only. Rare loot (2%): witch and illager kills. |
+| <img src="src/main/resources/assets/essentialis/textures/item/topaz_ring.png" width="32" /> | **Topaz Ring** - **+1** Luck. Netherite: +2 Luck and fortuitous finds (extra diamonds from lapis and emerald ores, bonus harvests, trophies from slain foes, lucky catches and luckier chests). Rare loot (2%): chests and barrels everywhere. |
 
 ## Compatibility
 - [Trinkets Updated](https://modrinth.com/mod/trinkets-updated): the Wayback Stone can be worn in a ring slot.
