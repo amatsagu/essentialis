@@ -105,7 +105,8 @@ public class WaybackStoneItem extends Item {
 
 		builder.accept(Component.translatableWithFallback(
 			"tooltip.essentialis.wayback_stone.line2",
-			"Recharges over 15 minutes."
+			"Recharges over %s.",
+			Component.literal("15 minutes").withStyle(ChatFormatting.GOLD)
 		).withStyle(ChatFormatting.GRAY));
 	}
 }

@@ -61,12 +61,12 @@ from either hand. Effects from multiple rings stack. Netherite versions are upgr
 
 | Icon | Ring |
 |---|---|
-| <img src="src/main/resources/assets/essentialis/textures/item/citrine_ring.png" width="32" /> | **Citrine Ring** - highlights enemies within **16 blocks** (red outline). Netherite: **32 blocks** and ignites undead within 16 blocks. Rare loot (3%): mineshafts, outposts, mansions, suspicious sand/gravel. |
+| <img src="src/main/resources/assets/essentialis/textures/item/citrine_ring.png" width="32" /> | **Citrine Ring** - highlights enemies within **16 blocks** (red outline). Netherite: **32 blocks** and ignites undead within 16 blocks. Cannot be stacked. Rare loot (3%): mineshafts, outposts, mansions, suspicious sand/gravel. |
 | <img src="src/main/resources/assets/essentialis/textures/item/jade_ring.png" width="32" /> | **Jade Ring** - **+10%** movement speed and jump height. Netherite: doubled, also works while riding. Rare loot (2%): chests and barrels everywhere. |
-| <img src="src/main/resources/assets/essentialis/textures/item/ruby_ring.png" width="32" /> | **Ruby Ring** - heals **5%** of the damage dealt by the player. Netherite: doubled. Rare loot (2%): nether fortresses and bastions. Rare loot (3%): suspicious sand/gravel. |
-| <img src="src/main/resources/assets/essentialis/textures/item/sapphire_ring.png" width="32" /> | **Sapphire Ring** - **25%** shorter burn time, **+25%** speed in water and lava. Netherite: +50% speed and longer breath. Rare loot (2%): ocean ruins, shipwrecks. Rare loot (3%): suspicious sand/gravel. Rare loot (1%): drowned kills. |
-| <img src="src/main/resources/assets/essentialis/textures/item/tanzanite_ring.png" width="32" /> | **Tanzanite Ring** - doubles the duration of **any** effect on the player. Netherite: positive effects only. Rare loot (2%): witch and illager kills. |
-| <img src="src/main/resources/assets/essentialis/textures/item/topaz_ring.png" width="32" /> | **Topaz Ring** - **+1** Luck. Netherite: +2 Luck and fortuitous finds (extra diamonds from lapis and emerald ores, bonus harvests, trophies from slain foes, lucky catches and luckier chests). Rare loot (2%): chests and barrels everywhere. |
+| <img src="src/main/resources/assets/essentialis/textures/item/ruby_ring.png" width="32" /> | **Ruby Ring** - heals **10%** of dealt damage. Netherite: **25%**. Cannot be stacked. Rare loot (2%): nether fortresses and bastions. Rare loot (3%): suspicious sand/gravel. |
+| <img src="src/main/resources/assets/essentialis/textures/item/sapphire_ring.png" width="32" /> | **Sapphire Ring** - **25%** shorter burn time, **+25%** speed in water and lava. Netherite: +50% speed, +50% breath and **50%** shorter burn time. Rare loot (2%): ocean ruins, shipwrecks. Rare loot (3%): suspicious sand/gravel. Rare loot (1%): drowned kills. |
+| <img src="src/main/resources/assets/essentialis/textures/item/tanzanite_ring.png" width="32" /> | **Tanzanite Ring** - doubles the duration of **any** effect on the player. Netherite: positive effects only. Cannot be stacked. Rare loot (2%): witch and illager kills. |
+| <img src="src/main/resources/assets/essentialis/textures/item/topaz_ring.png" width="32" /> | **Topaz Ring** - **+1** Luck. Netherite: +2 Luck and bonus chance for rare finds (chest loot, double mob drops, extra catches, gold nuggets from quartz, diamonds from lapis and emerald ores). Rare loot (2%): chests and barrels everywhere. |
 
 ## Compatibility
 - [Trinkets Updated](https://modrinth.com/mod/trinkets-updated): the Wayback Stone can be worn in a ring slot.

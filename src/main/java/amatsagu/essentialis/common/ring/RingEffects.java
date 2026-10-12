@@ -17,7 +17,6 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
@@ -31,10 +30,6 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.CocoaBlock;
-import net.minecraft.world.level.block.CropBlock;
-import net.minecraft.world.level.block.NetherWartBlock;
-import net.minecraft.world.level.block.SweetBerryBushBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.entity.EntityTypeTest;
@@ -106,10 +101,10 @@ public final class RingEffects {
 	public static void init() {
 		ServerTickEvents.END_SERVER_TICK.register(RingEffects::tickServer);
 		ServerLivingEntityEvents.AFTER_DAMAGE.register(RingEffects::lifesteal);
-		ServerLivingEntityEvents.AFTER_DEATH.register(RingEffects::topazHead);
 		PlayerBlockBreakEvents.AFTER.register(RingEffects::topazMining);
 		LootTableEvents.MODIFY_DROPS.register(RingEffects::topazFishing);
 		LootTableEvents.MODIFY_DROPS.register(RingEffects::topazChests);
+		LootTableEvents.MODIFY_DROPS.register(RingEffects::topazLooting);
 	}
 
 	private static void tickServer(final MinecraftServer server) {
@@ -196,7 +191,7 @@ public final class RingEffects {
 		if (active) {
 			final int fire = player.getRemainingFireTicks();
 
-			if (fire > 0 && fire % 3 == 0) {
+			if (fire > 0 && fire % (netherite ? 1 : 3) == 0) {
 				player.setRemainingFireTicks(fire - 1);
 			}
 
@@ -364,7 +359,7 @@ public final class RingEffects {
 		}
 
 		final Map<RingKind, Integer> rings = RingHelper.collect(attacker);
-		final double rate = 0.05D * RingHelper.normal(rings, RingFamily.RUBY) + 0.10D * RingHelper.netherite(rings, RingFamily.RUBY);
+		final double rate = RingHelper.netherite(rings, RingFamily.RUBY) > 0 ? 0.25D : (RingHelper.normal(rings, RingFamily.RUBY) > 0 ? 0.10D : 0.0D);
 
 		if (rate > 0.0D) {
 			attacker.heal((float) (dealt * rate));
@@ -380,53 +375,25 @@ public final class RingEffects {
 			return;
 		}
 
-		if (serverPlayer.getRandom().nextFloat() >= 0.10F) {
-			return;
-		}
-
 		final Block block = state.getBlock();
 
 		if (block == Blocks.LAPIS_ORE || block == Blocks.DEEPSLATE_LAPIS_ORE || block == Blocks.EMERALD_ORE || block == Blocks.DEEPSLATE_EMERALD_ORE) {
-			Block.popResource(serverLevel, pos, new ItemStack(Items.DIAMOND));
-			playEffect(serverLevel, Vec3.atCenterOf(pos));
+			if (serverPlayer.getRandom().nextFloat() < 0.05F) {
+				Block.popResource(serverLevel, pos, new ItemStack(Items.DIAMOND));
+				playEffect(serverLevel, Vec3.atCenterOf(pos));
+			}
+
 			return;
 		}
 
-		final ItemStack bonus = harvestBonus(state);
-
-		if (bonus != null) {
-			Block.popResource(serverLevel, pos, bonus);
+		if (block == Blocks.NETHER_QUARTZ_ORE && serverPlayer.getRandom().nextFloat() < 0.10F) {
+			Block.popResource(serverLevel, pos, new ItemStack(Items.GOLD_NUGGET, 2 + serverPlayer.getRandom().nextInt(7)));
 			playEffect(serverLevel, Vec3.atCenterOf(pos));
 		}
 	}
 
-	private static ItemStack harvestBonus(final BlockState state) {
-		final Block block = state.getBlock();
-
-		if (block instanceof CropBlock crop && crop.isMaxAge(state)) {
-			if (block == Blocks.WHEAT) return new ItemStack(Items.WHEAT);
-			if (block == Blocks.CARROTS) return new ItemStack(Items.CARROT);
-			if (block == Blocks.POTATOES) return new ItemStack(Items.POTATO);
-			if (block == Blocks.BEETROOTS) return new ItemStack(Items.BEETROOT);
-		}
-
-		if (block instanceof NetherWartBlock && state.getValue(NetherWartBlock.AGE) == NetherWartBlock.MAX_AGE) {
-			return new ItemStack(Items.NETHER_WART);
-		}
-
-		if (block instanceof CocoaBlock && state.getValue(CocoaBlock.AGE) == CocoaBlock.MAX_AGE) {
-			return new ItemStack(Items.COCOA_BEANS);
-		}
-
-		if (block instanceof SweetBerryBushBlock && state.getValue(SweetBerryBushBlock.AGE) == SweetBerryBushBlock.MAX_AGE) {
-			return new ItemStack(Items.SWEET_BERRIES);
-		}
-
-		return null;
-	}
-
-	private static void topazHead(final LivingEntity victim, final DamageSource source) {
-		if (!(victim.level() instanceof ServerLevel level) || !(source.getEntity() instanceof ServerPlayer killer)) {
+	private static void topazLooting(final Holder<LootTable> table, final LootContext context, final List<ItemStack> drops) {
+		if (!(context.getOptional(LootContextParams.LAST_DAMAGE_PLAYER) instanceof ServerPlayer killer)) {
 			return;
 		}
 
@@ -434,26 +401,20 @@ public final class RingEffects {
 			return;
 		}
 
-		final EntityType<?> type = victim.getType();
-
-		final ItemStack head;
-
-		if (type == EntityTypes.ZOMBIE) {
-			head = new ItemStack(Items.ZOMBIE_HEAD);
-		} else if (type == EntityTypes.SKELETON) {
-			head = new ItemStack(Items.SKELETON_SKULL);
-		} else if (type == EntityTypes.CREEPER) {
-			head = new ItemStack(Items.CREEPER_HEAD);
-		} else if (type == EntityTypes.PIGLIN) {
-			head = new ItemStack(Items.PIGLIN_HEAD);
-		} else {
+		if (drops.isEmpty() || killer.getRandom().nextFloat() >= 0.10F) {
 			return;
 		}
 
-		if (level.getRandom().nextFloat() < 0.03F) {
-			Block.popResource(level, victim.blockPosition(), head);
-			playEffect(level, victim.position());
+		final List<ItemStack> bonus = new ArrayList<>(drops.size());
+
+		for (final ItemStack drop : drops) {
+			if (!drop.isEmpty()) {
+				bonus.add(drop.copy());
+			}
 		}
+
+		drops.addAll(bonus);
+		playEffect(killer);
 	}
 
 	private static void topazFishing(final Holder<LootTable> table, final LootContext context, final List<ItemStack> drops) {

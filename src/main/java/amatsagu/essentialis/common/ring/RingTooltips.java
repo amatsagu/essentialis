@@ -13,7 +13,7 @@ public final class RingTooltips {
 	}
 
 	public static List<Component> lines(final RingKind kind) {
-		final List<Component> lines = new ArrayList<>(5);
+		final List<Component> lines = new ArrayList<>(4);
 		final String base = "tooltip.essentialis.ring." + kind.id;
 
 		int line = 1;
@@ -26,50 +26,61 @@ public final class RingTooltips {
 				break;
 			}
 
-			lines.add(text(key, fallback, line == 2 && !kind.netherite));
+			lines.add(text(key, fallback, kind == RingKind.NETHERITE_TOPAZ && line > 1));
 			line++;
 		}
 
 		lines.add(Component.empty());
-		lines.add(text(
-			"tooltip.essentialis.ring.loot." + kind.id,
-			LootFallbacks.get(kind),
-			false
-		));
 
 		return List.copyOf(lines);
 	}
 
-	private static Component text(final String key, final String fallback, final boolean gold) {
+	private static Component text(final String key, final String fallback, final boolean dark) {
 		final Object[] args = Args.get(key);
 
 		final MutableComponent line = args.length == 0
 			? Component.translatableWithFallback(key, fallback)
 			: Component.translatableWithFallback(key, fallback, args);
 
-		return line.withStyle(gold ? ChatFormatting.GOLD : ChatFormatting.GRAY);
+		return line.withStyle(dark ? ChatFormatting.DARK_GRAY : ChatFormatting.GRAY);
+	}
+
+	private static Component text(final String key, final String fallback) {
+		return text(key, fallback, false);
 	}
 
 	private static Component blue(final String value) {
 		return Component.literal(value).withStyle(ChatFormatting.BLUE);
 	}
 
+	private static Component red(final String value) {
+		return Component.literal(value).withStyle(ChatFormatting.RED);
+	}
+
+	private static Component orange(final String value) {
+		return Component.literal(value).withStyle(ChatFormatting.GOLD);
+	}
+
+	private static Component green(final String value) {
+		return Component.literal(value).withStyle(ChatFormatting.GREEN);
+	}
+
 	private static final class Args {
 
 		static Object[] get(final String key) {
 			return switch (key) {
-				case "tooltip.essentialis.ring.citrine_ring.line1" -> new Object[]{blue("16")};
-				case "tooltip.essentialis.ring.jade_ring.line1" -> new Object[]{blue("+10%")};
-				case "tooltip.essentialis.ring.ruby_ring.line1" -> new Object[]{blue("5%")};
-				case "tooltip.essentialis.ring.sapphire_ring.line1" -> new Object[]{blue("25%"), blue("+25%")};
-				case "tooltip.essentialis.ring.tanzanite_ring.line1" -> new Object[]{blue("any")};
+				case "tooltip.essentialis.ring.citrine_ring.line2" -> new Object[]{blue("16 blocks")};
+				case "tooltip.essentialis.ring.jade_ring.line1" -> new Object[]{blue("10%")};
+				case "tooltip.essentialis.ring.ruby_ring.line1" -> new Object[]{red("10%")};
+				case "tooltip.essentialis.ring.sapphire_ring.line1" -> new Object[]{blue("25%"), blue("25%")};
+				case "tooltip.essentialis.ring.tanzanite_ring.line1" -> new Object[]{blue("Doubles"), orange("any")};
 				case "tooltip.essentialis.ring.topaz_ring.line1" -> new Object[]{blue("+1")};
-				case "tooltip.essentialis.ring.netherite_citrine_ring.line1" -> new Object[]{blue("32")};
-				case "tooltip.essentialis.ring.netherite_citrine_ring.line2" -> new Object[]{blue("16")};
-				case "tooltip.essentialis.ring.netherite_jade_ring.line1" -> new Object[]{blue("+20%")};
-				case "tooltip.essentialis.ring.netherite_ruby_ring.line1" -> new Object[]{blue("10%")};
-				case "tooltip.essentialis.ring.netherite_sapphire_ring.line1" -> new Object[]{blue("25%"), blue("+50%")};
-				case "tooltip.essentialis.ring.netherite_tanzanite_ring.line1" -> new Object[]{blue("positive")};
+				case "tooltip.essentialis.ring.netherite_citrine_ring.line2" -> new Object[]{blue("32 blocks")};
+				case "tooltip.essentialis.ring.netherite_citrine_ring.line3" -> new Object[]{red("undead mobs"), orange("fire"), blue("16 blocks")};
+				case "tooltip.essentialis.ring.netherite_jade_ring.line1" -> new Object[]{blue("20%")};
+				case "tooltip.essentialis.ring.netherite_ruby_ring.line1" -> new Object[]{red("25%")};
+				case "tooltip.essentialis.ring.netherite_sapphire_ring.line1" -> new Object[]{blue("50%"), blue("50%"), blue("50%")};
+				case "tooltip.essentialis.ring.netherite_tanzanite_ring.line1" -> new Object[]{blue("Doubles"), green("any positive")};
 				case "tooltip.essentialis.ring.netherite_topaz_ring.line1" -> new Object[]{blue("+2")};
 				default -> new Object[0];
 			};
@@ -80,43 +91,34 @@ public final class RingTooltips {
 
 		static String get(final String key) {
 			return switch (key) {
-				case "tooltip.essentialis.ring.citrine_ring.line1" -> "Highlights nearby enemies within %s blocks.";
-				case "tooltip.essentialis.ring.citrine_ring.line2" -> "Netherite: 32 blocks and ignites undead.";
-				case "tooltip.essentialis.ring.jade_ring.line1" -> "Movement speed and jump height %s.";
-				case "tooltip.essentialis.ring.jade_ring.line2" -> "Netherite: doubled, works while riding.";
-				case "tooltip.essentialis.ring.ruby_ring.line1" -> "Heals %s of the damage dealt by the player.";
-				case "tooltip.essentialis.ring.ruby_ring.line2" -> "Netherite: doubles the effect.";
-				case "tooltip.essentialis.ring.sapphire_ring.line1" -> "Burns %s shorter. %s speed in water and lava.";
-				case "tooltip.essentialis.ring.sapphire_ring.line2" -> "Netherite: +50% speed and breath.";
-				case "tooltip.essentialis.ring.tanzanite_ring.line1" -> "Doubles the duration of %s effect on the player.";
-				case "tooltip.essentialis.ring.tanzanite_ring.line2" -> "Netherite: positive effects only.";
+				case "tooltip.essentialis.ring.citrine_ring.line1" -> "Signals about danger.";
+				case "tooltip.essentialis.ring.citrine_ring.line2" -> "All hostile mobs in range of %s will be highlighted.";
+				case "tooltip.essentialis.ring.citrine_ring.line3" -> "This effect cannot be stacked.";
+				case "tooltip.essentialis.ring.jade_ring.line1" -> "Grants %s bonus movement speed and jump boost.";
+				case "tooltip.essentialis.ring.ruby_ring.line1" -> "Heals back %s of dealt damage to others.";
+				case "tooltip.essentialis.ring.ruby_ring.line2" -> "This effect cannot be stacked.";
+				case "tooltip.essentialis.ring.sapphire_ring.line1" -> "Grants %s bonus movement speed in water or lava and also reduces burn time by %s.";
+				case "tooltip.essentialis.ring.tanzanite_ring.line1" -> "%s duration of %s status effect.";
+				case "tooltip.essentialis.ring.tanzanite_ring.line2" -> "This effect cannot be stacked.";
 				case "tooltip.essentialis.ring.topaz_ring.line1" -> "Grants %s Luck.";
-				case "tooltip.essentialis.ring.topaz_ring.line2" -> "Netherite: +2 Luck and fortuitous finds.";
-				case "tooltip.essentialis.ring.netherite_citrine_ring.line1" -> "Highlights nearby enemies within %s blocks.";
-				case "tooltip.essentialis.ring.netherite_citrine_ring.line2" -> "Ignites undead within %s blocks.";
-				case "tooltip.essentialis.ring.netherite_jade_ring.line1" -> "Movement speed and jump height %s, also while riding.";
-				case "tooltip.essentialis.ring.netherite_ruby_ring.line1" -> "Heals %s of the damage dealt by the player.";
-				case "tooltip.essentialis.ring.netherite_sapphire_ring.line1" -> "Burns %s shorter. %s speed in water and lava and longer breath.";
-				case "tooltip.essentialis.ring.netherite_tanzanite_ring.line1" -> "Doubles the duration of %s effects on the player.";
-				case "tooltip.essentialis.ring.netherite_topaz_ring.line1" -> "Grants %s Luck and fortuitous finds.";
+				case "tooltip.essentialis.ring.netherite_citrine_ring.line1" -> "Signals about danger.";
+				case "tooltip.essentialis.ring.netherite_citrine_ring.line2" -> "All hostile mobs in range of %s will be highlighted.";
+				case "tooltip.essentialis.ring.netherite_citrine_ring.line3" -> "It will additionally set all %s on %s within %s.";
+				case "tooltip.essentialis.ring.netherite_citrine_ring.line4" -> "This effect cannot be stacked.";
+				case "tooltip.essentialis.ring.netherite_jade_ring.line1" -> "Grants %s bonus movement speed and jump boost.";
+				case "tooltip.essentialis.ring.netherite_jade_ring.line2" -> "This effect additionally works while riding (on tamed mobs or vehicles).";
+				case "tooltip.essentialis.ring.netherite_ruby_ring.line1" -> "Heals back %s of dealt damage to others.";
+				case "tooltip.essentialis.ring.netherite_ruby_ring.line2" -> "This effect cannot be stacked.";
+				case "tooltip.essentialis.ring.netherite_sapphire_ring.line1" -> "Grants %s bonus movement speed in water or lava, %s more breath and reduces burn time by %s.";
+				case "tooltip.essentialis.ring.netherite_tanzanite_ring.line1" -> "%s duration of %s status effect.";
+				case "tooltip.essentialis.ring.netherite_tanzanite_ring.line2" -> "This effect cannot be stacked.";
+				case "tooltip.essentialis.ring.netherite_topaz_ring.line1" -> "Grants %s luck and provides bonus chance for:";
+				case "tooltip.essentialis.ring.netherite_topaz_ring.line2" -> "- Rolling bonus rare loot inside chest. (10%)";
+				case "tooltip.essentialis.ring.netherite_topaz_ring.line3" -> "- Applying looting twice on mob kill. (10%)";
+				case "tooltip.essentialis.ring.netherite_topaz_ring.line4" -> "- Getting extra catch when fishing. (10%)";
+				case "tooltip.essentialis.ring.netherite_topaz_ring.line5" -> "- Mining 2-8 gold nuggets out of quartz ore. (10%)";
+				case "tooltip.essentialis.ring.netherite_topaz_ring.line6" -> "- Mining diamonds out of lapis or emerald ores. (5%)";
 				default -> null;
-			};
-		}
-	}
-
-	private static final class LootFallbacks {
-
-		static String get(final RingKind kind) {
-			if (kind.netherite) {
-				return "Upgraded in a smithing table.";
-			}
-
-			return switch (kind.family()) {
-				case CITRINE -> "Rare loot: mineshafts, outposts and mansions.";
-				case JADE, TOPAZ -> "Rare loot: chests and barrels everywhere.";
-				case RUBY -> "Rare loot: nether fortresses and bastions.";
-				case SAPPHIRE -> "Rare loot: ocean ruins, shipwrecks and the drowned.";
-				case TANZANITE -> "Rare loot: witches and illagers.";
 			};
 		}
 	}
