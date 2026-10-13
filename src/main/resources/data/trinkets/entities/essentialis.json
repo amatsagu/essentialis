@@ -3,6 +3,7 @@
     "player"
   ],
   "slots": [
-    "essentialis/ring"
+    "hand/ring",
+    "offhand/ring"
   ]
 }
