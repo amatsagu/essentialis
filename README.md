@@ -69,7 +69,7 @@ from either hand. Effects from multiple rings stack. Netherite versions are upgr
 | <img src="src/main/resources/assets/essentialis/textures/item/topaz_ring.png" width="32" /> | **Topaz Ring** - **+1** Luck. Netherite: +2 Luck and bonus chance for rare finds (chest loot, double mob drops, extra catches, gold nuggets from quartz, diamonds from lapis and emerald ores). Rare loot (2%): chests and barrels everywhere. |
 
 ## Mod compatibility
-This mod was created for **Essentia 2** modpack - it's a close to vanilla modpack so this mod will work but it's not intended to be used elsewhere - that's why I don't provide config file.
+This mod was created for **Essentia 3** modpack - it's a close to vanilla modpack so this mod will work but it's not intended to be used elsewhere - that's why I don't provide config file.
 
 It requires [Trinkets Updated](https://modrinth.com/mod/trinkets-updated) mod and it is recommended to combine with [JEI](https://modrinth.com/mod/jei) to see recipes and extra data. Additionally, there's experimental, optional support for [Penchant](https://github.com/ThePotatoArchivist/Penchant) mod.
 
@@ -81,7 +81,7 @@ It requires [Trinkets Updated](https://modrinth.com/mod/trinkets-updated) mod an
 - Native Fabric implementation by **Amatsagu**.
 
 > [!Note]
-> Some of the datapack -> java code transpilation was handled with help of artificial intelligence. This mod can be viewed publicly so clients running Essentia 2 Modpack can properly resolve files & check for updates. This mod can be launched standalone but it was prepared with this modpack in mind.
+> Some of the datapack -> java code transpilation was handled with help of artificial intelligence. This mod can be viewed publicly so clients running Essentia 3 Modpack can properly resolve files & check for updates. This mod can be launched standalone but it was prepared with this modpack in mind.
 
 ## License
 All Rights Reserved with exception of elements taken directly from credited works.
